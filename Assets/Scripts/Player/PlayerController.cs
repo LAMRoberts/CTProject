@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
     public float maxAttackPower = 100.0f;
@@ -18,6 +17,10 @@ public class PlayerController : MonoBehaviour
 
     public Canvas hudPrefab;
     public Canvas hud;
+
+    public Elevator inElevator = Elevator.NONE;
+
+    private int floor = 1;
 
     private void Start()
     {
@@ -99,5 +102,15 @@ public class PlayerController : MonoBehaviour
         {
             health = 0;
         }
+    }
+
+    void SetPlayerInElevator(Elevator value)
+    {
+        inElevator = value;
+    }
+
+    public void SetLevel(int floorNumber)
+    {
+        floor = floorNumber;
     }
 }

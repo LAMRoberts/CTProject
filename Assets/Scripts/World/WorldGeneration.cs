@@ -30,6 +30,8 @@ public struct SideRoomInfo
 
 public class WorldGeneration : MonoBehaviour
 {
+    public int floorNumber = 1;
+
     public int LevelLength = 10;
 
     private List<GameObject> worldNodes;
@@ -37,7 +39,7 @@ public class WorldGeneration : MonoBehaviour
     public int NoOfSideRooms = 1;
 
     private List<SideRoomInfo> potentialSideRooms;
-
+       
     public GameObject worldNode;
     public GameObject roomPrefab;
     public GameObject bossRoomPrefab;
@@ -48,15 +50,18 @@ public class WorldGeneration : MonoBehaviour
 
     private GameObject startElevatorRoom;
     private GameObject bossRoom;
-    private GameObject startElevator;
-    private GameObject endElevator;
+    public GameObject startElevator;
+    public GameObject endElevator;
 
+    private GameObject worldInfo;
 
     void Start()
     {
         worldNodes = new List<GameObject>();
 
         potentialSideRooms = new List<SideRoomInfo>();
+
+        worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
         GenerateWorld();
 	}
@@ -99,7 +104,7 @@ public class WorldGeneration : MonoBehaviour
     // set world node positions
     void GenerateNodes()
     {
-        NodeInfo newPos = new NodeInfo(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
+        NodeInfo newPos = new NodeInfo(new Vector3(0, 0, 0), transform.position);
 
 	    for (int i = 0; i < LevelLength; i++)
         {
@@ -182,29 +187,53 @@ public class WorldGeneration : MonoBehaviour
             
             if (count == 1)
             {
-                startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
+                if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
+                {
+                    startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
 
-                startElevator = Instantiate(elevatorPrefab);
+                    startElevator = Instantiate(elevatorPrefab);
 
-                startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+                    startElevator.GetComponent<ElevatorController>().whichOne = Elevator.PREVIOUS;
 
-                startElevator.GetComponent<ElevatorController>().whichOne = Elevator.PREVIOUS;
+                    startElevator.gameObject.tag = "StartElevator";
+
+                    startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+                }
+                else
+                {
+                    if (!(startElevator = GameObject.FindGameObjectWithTag("StartElevator")))
+                    {
+                        Debug.Log("cant find StartElevator");
+                    }
 
 
-
+                }
+                                
                 south = true;
             }
             else if (count == worldNodes.Count)
             {
                 bossRoom = Instantiate(bossRoomPrefab, node.transform);
 
-                endElevator = Instantiate(elevatorPrefab);
+                if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
+                {
+                    endElevator = Instantiate(elevatorPrefab);
 
-                endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+                    endElevator.transform.Rotate(new Vector3(0, 180, 0));
 
-                endElevator.transform.Rotate(new Vector3(0, 180, 0));
+                    endElevator.GetComponent<ElevatorController>().whichOne = Elevator.NEXT;
 
-                endElevator.GetComponent<ElevatorController>().whichOne = Elevator.NEXT;
+                    endElevator.gameObject.tag = "EndElevator";
+
+                    endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+                }
+                else
+                {
+                    if (!(endElevator = GameObject.FindGameObjectWithTag("EndElevator")))
+                    {
+                        Debug.Log("cant find EndElevator");
+                    }
+                }
 
                 north = true;
             }
@@ -293,5 +322,18 @@ public class WorldGeneration : MonoBehaviour
 
             count++;
         }
+
+        if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() != 1)
+        {
+            startElevator.transform.position = new Vector3(0, 10, 0);
+            endElevator.transform.position = new Vector3(0, 20, 0);
+        }
+
+
+        //startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+
+        //endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+
+        count = 1;
     }
 }

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - HUD
+  - WorldInfo
+  - StartElevator
+  - EndElevator
   layers:
   - Default
   - TransparentFX

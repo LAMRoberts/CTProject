@@ -12,16 +12,18 @@ public enum ElevatorState
 
 public enum Elevator
 {
-    PREVIOUS    = 0,
-    NEXT        = 1
+    NONE        = 0,
+    PREVIOUS    = 1,
+    NEXT        = 2
 }
 
 public class ElevatorController : MonoBehaviour
 {
+    public GameObject worldInfo;
+
     public Transform playerPosition;
 
-    [SerializeField]
-    private int floor = 1;
+    public int floor = 1;
 
     public GameObject leftInternalDoor;
     public GameObject rightInternalDoor;
@@ -31,8 +33,9 @@ public class ElevatorController : MonoBehaviour
     public Vector3 rightOpenPosition;
     public Vector3 rightClosedPosition;
 
-    public Elevator whichOne;
+    public Elevator whichOne = Elevator.NONE;
 
+    public GameObject player;
     public Canvas hud;
 
     private int objectsInRange = 0;
@@ -48,7 +51,10 @@ public class ElevatorController : MonoBehaviour
         leftOpenPosition = leftInternalDoor.transform.position;
         rightOpenPosition = rightInternalDoor.transform.position;
 
-        hud = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().hud;
+        player = GameObject.FindGameObjectWithTag("Player");
+        hud = player.GetComponent<PlayerController>().hud;
+
+        worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
     }
 
     void Update()
@@ -100,8 +106,6 @@ public class ElevatorController : MonoBehaviour
 
     public void EnterCollider()
     {
-        objectsInRange++;
-
         if (state == ElevatorState.CLOSED)
         {
             state = ElevatorState.OPENING;
@@ -110,17 +114,19 @@ public class ElevatorController : MonoBehaviour
         if (whichOne == Elevator.PREVIOUS)
         {
             hud.GetComponent<HUDController>().PreviousFloor();
+
+            player.GetComponent<PlayerController>().inElevator = whichOne;
         }
         else if (whichOne == Elevator.NEXT)
         {
             hud.GetComponent<HUDController>().NextFloor();
+
+            player.GetComponent<PlayerController>().inElevator = whichOne;
         }
     }
 
     public void ExitCollider()
     {
-        objectsInRange--;
-
         if (whichOne == Elevator.PREVIOUS)
         {
             hud.GetComponent<HUDController>().PreviousFloor();
@@ -131,13 +137,32 @@ public class ElevatorController : MonoBehaviour
         }
     }
 
-    bool OpenDoors()
+    public bool OpenDoors()
     {
         return true;
     }
 
-    bool CloseDoors()
+    public bool CloseDoors()
     {
         return true;
     }
+
+    public void ChangeFloors()
+    {
+        if (whichOne == Elevator.NEXT)
+        {
+            player.GetComponent<PlayerController>().SetLevel(floor + 1);
+
+            worldInfo.GetComponent<WorldInfo>().SetLowestFloor(floor + 1);
+        }
+        else if (whichOne == Elevator.PREVIOUS)
+        {
+            player.GetComponent<PlayerController>().SetLevel(floor - 1);
+        }
+        else
+        {
+            Debug.Log("ElevatorController.whichOne not set");
+        }
+    }
+
 }
