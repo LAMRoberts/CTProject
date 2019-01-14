@@ -20,11 +20,15 @@ public class PlayerController : MonoBehaviour
 
     public Elevator inElevator = Elevator.NONE;
 
-    private int floor = 1;
+    public Vector3 positionDifference;
+
+    public int playerFloor = 1;
 
     private void Start()
     {
         hud = Instantiate(hudPrefab);
+
+        positionDifference = new Vector3(0, 0, 0);
     }
 
     private void LateUpdate ()
@@ -111,6 +115,6 @@ public class PlayerController : MonoBehaviour
 
     public void SetLevel(int floorNumber)
     {
-        floor = floorNumber;
+        playerFloor = floorNumber;
     }
 }

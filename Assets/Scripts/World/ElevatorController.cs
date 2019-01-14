@@ -21,9 +21,7 @@ public class ElevatorController : MonoBehaviour
 {
     public GameObject worldInfo;
 
-    public Transform playerPosition;
-
-    public int floor = 1;
+    public int elevatorFloor = 0;
 
     public GameObject leftInternalDoor;
     public GameObject rightInternalDoor;
@@ -151,13 +149,17 @@ public class ElevatorController : MonoBehaviour
     {
         if (whichOne == Elevator.NEXT)
         {
-            player.GetComponent<PlayerController>().SetLevel(floor + 1);
+            Debug.Log("Elevator is at floor: " + elevatorFloor + ", Going Down");
 
-            worldInfo.GetComponent<WorldInfo>().SetLowestFloor(floor + 1);
+            player.GetComponent<PlayerController>().SetLevel(elevatorFloor + 1);
+
+            worldInfo.GetComponent<WorldInfo>().SetLowestFloor(elevatorFloor + 1);
+
+            player.GetComponent<PlayerController>().positionDifference = transform.position - player.transform.position;
         }
         else if (whichOne == Elevator.PREVIOUS)
         {
-            player.GetComponent<PlayerController>().SetLevel(floor - 1);
+            player.GetComponent<PlayerController>().SetLevel(elevatorFloor - 1);
         }
         else
         {

@@ -30,7 +30,7 @@ public struct SideRoomInfo
 
 public class WorldGeneration : MonoBehaviour
 {
-    public int floorNumber = 1;
+    public int generatedFloor = 1;
 
     public int LevelLength = 10;
 
@@ -48,6 +48,9 @@ public class WorldGeneration : MonoBehaviour
     public GameObject sideRoomPrefab;
     public GameObject wallPrefab;
 
+
+    private GameObject player;
+    private PlayerController pc;
     private GameObject startElevatorRoom;
     private GameObject bossRoom;
     public GameObject startElevator;
@@ -57,11 +60,14 @@ public class WorldGeneration : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
+        pc = player.GetComponent<PlayerController>();
+
         worldNodes = new List<GameObject>();
-
         potentialSideRooms = new List<SideRoomInfo>();
-
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
+
+        generatedFloor = pc.playerFloor;
 
         GenerateWorld();
 	}
@@ -174,10 +180,11 @@ public class WorldGeneration : MonoBehaviour
         return new NodeInfo(info.nextPosition, info.nextPosition + new Vector3(10, 0, 0));
     }
 
-    // instanciate rooms in world
+    // instantiate rooms in world
     void FillNodes()
     {
         int count = 1;
+
         foreach (GameObject node in worldNodes)
         {
             bool north = false;
@@ -187,34 +194,34 @@ public class WorldGeneration : MonoBehaviour
             
             if (count == 1)
             {
+                // starting elevator room
+                startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
+
+                // start elevator
                 if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
                 {
-                    startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
-
                     startElevator = Instantiate(elevatorPrefab);
 
                     startElevator.GetComponent<ElevatorController>().whichOne = Elevator.PREVIOUS;
 
                     startElevator.gameObject.tag = "StartElevator";
-
-                    startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
                 }
-                else
-                {
-                    if (!(startElevator = GameObject.FindGameObjectWithTag("StartElevator")))
-                    {
-                        Debug.Log("cant find StartElevator");
-                    }
 
+                startElevator = GameObject.FindGameObjectWithTag("StartElevator");
 
-                }
-                                
+                startElevator.GetComponent<ElevatorController>().elevatorFloor = generatedFloor;
+
+                startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+
+                // set walls to open
                 south = true;
             }
             else if (count == worldNodes.Count)
             {
+                // boss room
                 bossRoom = Instantiate(bossRoomPrefab, node.transform);
 
+                // end elevator
                 if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
                 {
                     endElevator = Instantiate(elevatorPrefab);
@@ -224,17 +231,16 @@ public class WorldGeneration : MonoBehaviour
                     endElevator.GetComponent<ElevatorController>().whichOne = Elevator.NEXT;
 
                     endElevator.gameObject.tag = "EndElevator";
-
-                    endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
-                }
-                else
-                {
-                    if (!(endElevator = GameObject.FindGameObjectWithTag("EndElevator")))
-                    {
-                        Debug.Log("cant find EndElevator");
-                    }
                 }
 
+                // after floor one dont make a new elevator
+                endElevator = GameObject.FindGameObjectWithTag("EndElevator");
+
+                endElevator.GetComponent<ElevatorController>().elevatorFloor = generatedFloor;
+
+                endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+
+                // set walls to open
                 north = true;
             }
             else
@@ -322,17 +328,11 @@ public class WorldGeneration : MonoBehaviour
 
             count++;
         }
-
+        
         if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() != 1)
         {
-            startElevator.transform.position = new Vector3(0, 10, 0);
-            endElevator.transform.position = new Vector3(0, 20, 0);
+            player.transform.position = new Vector3(startElevator.transform.position.x + pc.positionDifference.x, startElevator.transform.position.y + 2, startElevator.transform.position.z + pc.positionDifference.z);
         }
-
-
-        //startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
-
-        //endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
 
         count = 1;
     }
