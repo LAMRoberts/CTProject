@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1695188148344776}
+  m_IsPrefabAsset: 1
+--- !u!1 &1695188148344776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4312632998152364}
+  - component: {fileID: 114929020453228486}
+  m_Layer: 0
+  m_Name: Level
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4312632998152364
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1695188148344776}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114929020453228486
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1695188148344776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac5b392e9420a146ba387ab149ec4ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorNumber: 1
+  LevelLength: 2
+  NoOfSideRooms: 1
+  worldNode: {fileID: 1824640752257954, guid: d6f28d5c619870b42abcd3a4a6ea818b, type: 2}
+  roomPrefab: {fileID: 1220670854365832, guid: f509083abaccd0840a0891588ba5c438, type: 2}
+  bossRoomPrefab: {fileID: 1590180670020542, guid: 0804b3be185340d469106c4754532bc6,
+    type: 2}
+  startRoomPrefab: {fileID: 1719978235365154, guid: 62d383299ba2a254cb398334f48fed6e,
+    type: 2}
+  elevatorPrefab: {fileID: 1610739361160646, guid: 4e87e8118d520cc4d9a896a6b3774afb,
+    type: 2}
+  sideRoomPrefab: {fileID: 1697842219804268, guid: 5ba552428d3ceb04abb927cb84a56cca,
+    type: 2}
+  wallPrefab: {fileID: 1191685098451246, guid: 908355484a27c714794e5042771b7d78, type: 2}
+  startElevator: {fileID: 0}
+  endElevator: {fileID: 0}

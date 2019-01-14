@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PlayerController : MonoBehaviour
 {
     public float maxAttackPower = 100.0f;
@@ -15,8 +14,24 @@ public class PlayerController : MonoBehaviour
     private bool attacking = false;
     private bool charging = false;
     private bool shouldConsumeStamina = false;
-	
-	void LateUpdate ()
+
+    public Canvas hudPrefab;
+    public Canvas hud;
+
+    public Elevator inElevator = Elevator.NONE;
+
+    public Vector3 positionDifference;
+
+    public int playerFloor = 1;
+
+    private void Start()
+    {
+        hud = Instantiate(hudPrefab);
+
+        positionDifference = new Vector3(0, 0, 0);
+    }
+
+    private void LateUpdate ()
     {
         if (Input.GetKeyDown("h"))
         {
@@ -26,7 +41,7 @@ public class PlayerController : MonoBehaviour
         Attack();
     }
 
-    void Attack()
+    private void Attack()
     {
         if (Input.GetMouseButton(0))
         {
@@ -91,5 +106,15 @@ public class PlayerController : MonoBehaviour
         {
             health = 0;
         }
+    }
+
+    void SetPlayerInElevator(Elevator value)
+    {
+        inElevator = value;
+    }
+
+    public void SetLevel(int floorNumber)
+    {
+        playerFloor = floorNumber;
     }
 }

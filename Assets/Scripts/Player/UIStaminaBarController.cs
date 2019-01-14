@@ -14,6 +14,7 @@ public class UIStaminaBarController : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         pm = player.GetComponent<PlayerMovement>();
     }
 

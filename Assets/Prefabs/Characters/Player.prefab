@@ -264,7 +264,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1846717036070772}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: -46.03}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 4951970161018930}
@@ -524,7 +524,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!81 &81195338918378952
 AudioListener:
@@ -571,8 +571,8 @@ MonoBehaviour:
   leftwards: {fileID: 4544805348614084}
   rightwards: {fileID: 4017825884081878}
   backwards: {fileID: 4555482776830540}
-  walkingSpeed: 5
-  runningSpeed: 10
+  walkingSpeed: 7
+  runningSpeed: 14
   maxStamina: 100
   stamina: 100
   staminaRate: 0.002
@@ -596,6 +596,11 @@ MonoBehaviour:
   attackChargeRate: 2
   health: 100
   staminaCostMultiplier: 3
+  hudPrefab: {fileID: 223415165919912928, guid: 00af4b0cb122ff94a973fb64c36653e6,
+    type: 2}
+  hud: {fileID: 0}
+  inElevator: 0
+  floor: 1
 --- !u!114 &114874211227311434
 MonoBehaviour:
   m_ObjectHideFlags: 1
