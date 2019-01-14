@@ -10,6 +10,12 @@ public enum ElevatorState
     CLOSING     = 3
 }
 
+public enum Elevator
+{
+    PREVIOUS    = 0,
+    NEXT        = 1
+}
+
 public class ElevatorController : MonoBehaviour
 {
     public Transform playerPosition;
@@ -25,6 +31,10 @@ public class ElevatorController : MonoBehaviour
     public Vector3 rightOpenPosition;
     public Vector3 rightClosedPosition;
 
+    public Elevator whichOne;
+
+    public Canvas hud;
+
     private int objectsInRange = 0;
 
     [SerializeField]
@@ -37,6 +47,8 @@ public class ElevatorController : MonoBehaviour
     {
         leftOpenPosition = leftInternalDoor.transform.position;
         rightOpenPosition = rightInternalDoor.transform.position;
+
+        hud = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().hud;
     }
 
     void Update()
@@ -94,11 +106,29 @@ public class ElevatorController : MonoBehaviour
         {
             state = ElevatorState.OPENING;
         }
+
+        if (whichOne == Elevator.PREVIOUS)
+        {
+            hud.GetComponent<HUDController>().PreviousFloor();
+        }
+        else if (whichOne == Elevator.NEXT)
+        {
+            hud.GetComponent<HUDController>().NextFloor();
+        }
     }
 
     public void ExitCollider()
     {
         objectsInRange--;
+
+        if (whichOne == Elevator.PREVIOUS)
+        {
+            hud.GetComponent<HUDController>().PreviousFloor();
+        }
+        else if (whichOne == Elevator.NEXT)
+        {
+            hud.GetComponent<HUDController>().NextFloor();
+        }
     }
 
     bool OpenDoors()

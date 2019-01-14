@@ -15,8 +15,16 @@ public class PlayerController : MonoBehaviour
     private bool attacking = false;
     private bool charging = false;
     private bool shouldConsumeStamina = false;
-	
-	void LateUpdate ()
+
+    public Canvas hudPrefab;
+    public Canvas hud;
+
+    private void Start()
+    {
+        hud = Instantiate(hudPrefab);
+    }
+
+    private void LateUpdate ()
     {
         if (Input.GetKeyDown("h"))
         {
@@ -26,7 +34,7 @@ public class PlayerController : MonoBehaviour
         Attack();
     }
 
-    void Attack()
+    private void Attack()
     {
         if (Input.GetMouseButton(0))
         {

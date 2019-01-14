@@ -46,7 +46,13 @@ public class WorldGeneration : MonoBehaviour
     public GameObject sideRoomPrefab;
     public GameObject wallPrefab;
 
-	void Start()
+    private GameObject startElevatorRoom;
+    private GameObject bossRoom;
+    private GameObject startElevator;
+    private GameObject endElevator;
+
+
+    void Start()
     {
         worldNodes = new List<GameObject>();
 
@@ -173,31 +179,44 @@ public class WorldGeneration : MonoBehaviour
             bool east = false;
             bool south = false;
             bool west = false;
-
-            if (count == worldNodes.Count)
+            
+            if (count == 1)
             {
-                Instantiate(bossRoomPrefab, node.transform);
+                startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
 
-                north = true;
-            }
-            else if (count == 1)
-            {
-                GameObject elevatorRoom = Instantiate(startRoomPrefab, node.transform);
+                startElevator = Instantiate(elevatorPrefab);
 
-                GameObject elevator = Instantiate(elevatorPrefab, elevatorRoom.transform);
+                startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
 
-                elevator.transform.position = elevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+                startElevator.GetComponent<ElevatorController>().whichOne = Elevator.PREVIOUS;
+
+
 
                 south = true;
             }
+            else if (count == worldNodes.Count)
+            {
+                bossRoom = Instantiate(bossRoomPrefab, node.transform);
+
+                endElevator = Instantiate(elevatorPrefab);
+
+                endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
+
+                endElevator.transform.Rotate(new Vector3(0, 180, 0));
+
+                endElevator.GetComponent<ElevatorController>().whichOne = Elevator.NEXT;
+
+                north = true;
+            }
             else
             {
+                // instantiate normal room
                 Instantiate(roomPrefab, node.transform);
             }
 
+            // Check rooms for potential wall positions
             foreach (GameObject room in worldNodes)
             {
-                // Check rooms for potential wall positions
                 // if a room is to the north
                 if (Equals(room.transform.position, node.transform.position + new Vector3(0, 0, 10)))
                 {
@@ -254,6 +273,7 @@ public class WorldGeneration : MonoBehaviour
                 }
             }
 
+            // instantiate walls
             if (!north)
             {
                 Instantiate(wallPrefab, node.GetComponent<NodeController>().northWall);
