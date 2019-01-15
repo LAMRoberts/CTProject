@@ -64,6 +64,8 @@ public class WorldGeneration : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
+        maxSideRooms = player.GetComponent<Profile>().maxSideRooms;
+
         generatedFloor = pc.playerFloor;
 
         worldNodes = new List<GameObject>();
@@ -205,7 +207,7 @@ public class WorldGeneration : MonoBehaviour
                 startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
 
                 // start elevator
-                if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
+                if (!startElevator)
                 {
                     startElevator = Instantiate(elevatorPrefab);
 
@@ -229,7 +231,7 @@ public class WorldGeneration : MonoBehaviour
                 bossRoom = Instantiate(bossRoomPrefab, node.transform);
 
                 // end elevator
-                if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
+                if (!endElevator)
                 {
                     endElevator = Instantiate(elevatorPrefab);
 
