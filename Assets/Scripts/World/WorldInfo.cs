@@ -21,7 +21,7 @@ public class WorldInfo : MonoBehaviour
 
         levels.Add(level);
 
-        Debug.Log(levels.Count);
+        Debug.Log(levels.Count + " Floors Total");
     }
 
     private void Update()
