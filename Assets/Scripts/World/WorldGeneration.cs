@@ -19,12 +19,14 @@ public struct SideRoomInfo
 {
     public GameObject node;
     public bool isToEast;
+    public List<GameObject> sideNodes;
 
     // constructor
     public SideRoomInfo(GameObject worldNode, bool eastward)
     {
         node = worldNode;
         isToEast = eastward;
+        sideNodes = new List<GameObject>();
     }
 }
 
@@ -35,6 +37,8 @@ public class WorldGeneration : MonoBehaviour
     public int levelLength = 10;
     public int maxSideRooms = 1;
 
+    public int sideRoomLength = 10;
+
     private List<GameObject> worldNodes;
     private List<SideRoomInfo> potentialSideRooms;
     private List<SideRoomInfo> sideRooms;
@@ -44,7 +48,7 @@ public class WorldGeneration : MonoBehaviour
     public GameObject bossRoomPrefab;
     public GameObject startRoomPrefab;
     public GameObject elevatorPrefab;
-    public GameObject sideRoomPrefab;
+    public GameObject stairsPrefab;
     public GameObject wallPrefab;
     
     private GameObject player;
@@ -115,6 +119,9 @@ public class WorldGeneration : MonoBehaviour
 
         // find potential side rooms and generate them
         GenerateSideRooms();
+
+        // fill side rooms
+        GenerateSideRoomCorridors();
 
         // populate rooms with walls
         GenerateWalls();
@@ -330,15 +337,11 @@ public class WorldGeneration : MonoBehaviour
             maxSideRooms = potentialSideRooms.Count;
         }
 
-        Debug.Log("Max: " + maxSideRooms + ", P: " + potentialSideRooms.Count);
-
         // set side room separation
         int sideRoomSpacing = potentialSideRooms.Count / maxSideRooms;
 
         for (int bees = 0; bees < maxSideRooms; bees++)
         {
-            Debug.Log((bees * sideRoomSpacing) + ", " + ((bees + 1) * sideRoomSpacing));
-
             // find next floor room to place a side room in
             int rng = Random.Range((bees * sideRoomSpacing), ((bees + 1) * sideRoomSpacing));
 
@@ -355,7 +358,7 @@ public class WorldGeneration : MonoBehaviour
             {
                 nc.east = true;
 
-                GameObject sideRoom = Instantiate(sideRoomPrefab, info.node.transform);
+                GameObject sideRoom = Instantiate(stairsPrefab, info.node.transform);
 
                 sideRoom.transform.position = info.node.transform.position + new Vector3(10, 0, 0);
             }
@@ -363,12 +366,41 @@ public class WorldGeneration : MonoBehaviour
             {
                 nc.west = true;
 
-                GameObject sideRoom = Instantiate(sideRoomPrefab, info.node.transform);
+                GameObject sideRoom = Instantiate(stairsPrefab, info.node.transform);
 
                 sideRoom.transform.position = info.node.transform.position + new Vector3(-10, 0, 0);
 
                 sideRoom.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
             }
+        }
+    }
+
+    private void GenerateSideRoomCorridors()
+    {
+        int sideRoomIndex = 0;
+        foreach(SideRoomInfo sideRoom in sideRooms)
+        {
+            for (int i = 0; i < sideRoomIndex; i++)
+            {
+                GameObject stairs = Instantiate(stairsPrefab, sideRoom.node.transform);
+
+                if (sideRoom.isToEast)
+                {
+                    stairs.transform.position = (sideRoom.node.transform.position + new Vector3((10 * i) + 20, (-5 * i) - 5, 0));
+                }
+                else
+                {
+                    stairs.transform.position = (sideRoom.node.transform.position + new Vector3((-10 * i) - 20, (-5 * i) - 5, 0));
+
+                    stairs.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+                }
+
+                sideRoom.sideNodes.Add(stairs);
+            }
+
+            Debug.Log(sideRoom.sideNodes.Count);
+
+            sideRoomIndex++;
         }
     }
 
