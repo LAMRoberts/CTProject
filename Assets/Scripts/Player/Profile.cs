@@ -27,8 +27,6 @@ public class Profile : MonoBehaviour
     [SerializeField]
     private float roomSearchProbability = 0.0f;
 
-    public int numberOfSideRooms = 2;
-
     private int totalSideRooms = 0;
     private int sideRoomsComplete = 0;
     [SerializeField]
@@ -48,7 +46,7 @@ public class Profile : MonoBehaviour
 
     // achiever
 
-    // socializer
+    // socializer 
 
     #region Explorer
 

@@ -33,13 +33,12 @@ public class WorldGeneration : MonoBehaviour
     public int generatedFloor = 1;
 
     public int levelLength = 10;
+    public int maxSideRooms = 1;
 
     private List<GameObject> worldNodes;
     private List<SideRoomInfo> potentialSideRooms;
     private List<SideRoomInfo> sideRooms;
-
-    public int maxSideRooms = 1;
-       
+              
     public GameObject worldNode;
     public GameObject roomPrefab;
     public GameObject bossRoomPrefab;
@@ -47,10 +46,10 @@ public class WorldGeneration : MonoBehaviour
     public GameObject elevatorPrefab;
     public GameObject sideRoomPrefab;
     public GameObject wallPrefab;
-
-
+    
     private GameObject player;
     private PlayerController pc;
+    private Profile pp;
     private GameObject startElevatorRoom;
     private GameObject bossRoom;
     public GameObject startElevator;
@@ -62,9 +61,11 @@ public class WorldGeneration : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         pc = player.GetComponent<PlayerController>();
+        pp = player.GetComponent<Profile>();
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
-        maxSideRooms = player.GetComponent<Profile>().maxSideRooms;
+        levelLength = pp.floorLength;
+        maxSideRooms = pp.sideRoomCount;
 
         generatedFloor = pc.playerFloor;
 
@@ -307,36 +308,45 @@ public class WorldGeneration : MonoBehaviour
         {
             NodeController nc = node.GetComponent<NodeController>();
 
-            if (nc.north == true && nc.south == true)
+            // if theres no room to the east
+            if (!nc.east)
             {
-                // if theres no room to the east
-                if (nc.east == false)
-                {
-                    SideRoomInfo sideRoomInfo = new SideRoomInfo(node, true);
+                SideRoomInfo sideRoomInfo = new SideRoomInfo(node, true);
 
-                    potentialSideRooms.Add(sideRoomInfo);
-                }
-                // if theres no room to the west
-                if (nc.west == false)
-                {
-                    SideRoomInfo sideRoomInfo = new SideRoomInfo(node, false);
+                potentialSideRooms.Add(sideRoomInfo);
+            }
+            // if theres no room to the west
+            if (!nc.west)
+            {
+                SideRoomInfo sideRoomInfo = new SideRoomInfo(node, false);
 
-                    potentialSideRooms.Add(sideRoomInfo);                
-                }
+                potentialSideRooms.Add(sideRoomInfo);                
             }
         }
 
+        // check max is not too high
+        if (maxSideRooms > potentialSideRooms.Count)
+        {
+            maxSideRooms = potentialSideRooms.Count;
+        }
+
+        Debug.Log("Max: " + maxSideRooms + ", P: " + potentialSideRooms.Count);
+
+        // set side room separation
         int sideRoomSpacing = potentialSideRooms.Count / maxSideRooms;
 
-        for (int index = 0; index < maxSideRooms; index++)
+        for (int bees = 0; bees < maxSideRooms; bees++)
         {
+            Debug.Log((bees * sideRoomSpacing) + ", " + ((bees + 1) * sideRoomSpacing));
+
             // find next floor room to place a side room in
-            int rng = Random.Range((index * sideRoomSpacing), ((index + 1) * sideRoomSpacing));
+            int rng = Random.Range((bees * sideRoomSpacing), ((bees + 1) * sideRoomSpacing));
 
             // add room to side rooms list
             sideRooms.Add(potentialSideRooms[rng]);            
         }
 
+        // instantiate side rooms
         foreach (SideRoomInfo info in sideRooms)
         {
             NodeController nc = info.node.GetComponent<NodeController>();
