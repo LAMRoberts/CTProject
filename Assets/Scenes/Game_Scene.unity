@@ -113,6 +113,44 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &24432354 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1846717036070772, guid: 046e6a748a019d2439c98d7db2b8939e,
+    type: 2}
+  m_PrefabInternal: {fileID: 1749872393}
+--- !u!114 &24432355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 24432354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab16f9b3ea5f45c428f467e85fb61f13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explorer: 0
+  killer: 0
+  achiever: 0
+  socialiser: 0
+  floorLength: 10
+  sideRoomCount: 2
+  sideRoomProbability: 50
+  totalRooms: 0
+  roomsSearched: 0
+  roomSearchProbability: 0
+  numberOfSideRooms: 2
+  totalSideRooms: 0
+  sideRoomsComplete: 0
+  sideRoomCompleteProbability: 0
+  enemyProbability: 20
+  maxEnemiesOnFloor: 10
+  maxEnemyCount: 1
+  totalEnemiesSpawned: 0
+  enemiesKilled: 0
+  enemyKillProbability: 0
+  highestDifficultyEnemyKilled: 0
+  highestDifficultyBossKilled: 0
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
