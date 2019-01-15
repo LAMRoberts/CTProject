@@ -51,9 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dac5b392e9420a146ba387ab149ec4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorNumber: 1
-  LevelLength: 2
-  NoOfSideRooms: 1
+  generatedFloor: 1
+  levelLength: 100
+  maxSideRooms: 100
   worldNode: {fileID: 1824640752257954, guid: d6f28d5c619870b42abcd3a4a6ea818b, type: 2}
   roomPrefab: {fileID: 1220670854365832, guid: f509083abaccd0840a0891588ba5c438, type: 2}
   bossRoomPrefab: {fileID: 1590180670020542, guid: 0804b3be185340d469106c4754532bc6,

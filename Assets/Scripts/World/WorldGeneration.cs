@@ -6,7 +6,7 @@ public struct NodeInfo
 {
     public Vector3 previousPosition;
     public Vector3 nextPosition;
-
+    
     // constructor
     public NodeInfo(Vector3 prevPos, Vector3 nextPos)
     {
@@ -32,13 +32,13 @@ public class WorldGeneration : MonoBehaviour
 {
     public int generatedFloor = 1;
 
-    public int LevelLength = 10;
+    public int levelLength = 10;
 
     private List<GameObject> worldNodes;
-
-    public int NoOfSideRooms = 1;
-
     private List<SideRoomInfo> potentialSideRooms;
+    private List<SideRoomInfo> sideRooms;
+
+    public int maxSideRooms = 1;
        
     public GameObject worldNode;
     public GameObject roomPrefab;
@@ -62,12 +62,15 @@ public class WorldGeneration : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         pc = player.GetComponent<PlayerController>();
+        worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
+
+        maxSideRooms = player.GetComponent<Profile>().maxSideRooms;
+
+        generatedFloor = pc.playerFloor;
 
         worldNodes = new List<GameObject>();
         potentialSideRooms = new List<SideRoomInfo>();
-        worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
-
-        generatedFloor = pc.playerFloor;
+        sideRooms = new List<SideRoomInfo>();
 
         GenerateWorld();
 	}
@@ -91,10 +94,10 @@ public class WorldGeneration : MonoBehaviour
             Destroy(node);
         }  
         
-        // clear list
+        // clear lists
         worldNodes.Clear();
-
         potentialSideRooms.Clear();
+        sideRooms.Clear();
     }
 
     // start world generation
@@ -103,8 +106,17 @@ public class WorldGeneration : MonoBehaviour
         // fill world
         GenerateNodes();
 
-        // populate room nodes
+        // populate room nodes with rooms
         FillNodes();
+
+        // find potential wall positions
+        FindWallPositions();
+
+        // find potential side rooms and generate them
+        GenerateSideRooms();
+
+        // populate rooms with walls
+        GenerateWalls();
     }
 
     // set world node positions
@@ -112,7 +124,7 @@ public class WorldGeneration : MonoBehaviour
     {
         NodeInfo newPos = new NodeInfo(new Vector3(0, 0, 0), transform.position);
 
-	    for (int i = 0; i < LevelLength; i++)
+	    for (int i = 0; i < levelLength; i++)
         {
             GameObject nextWorldNode = Instantiate(worldNode, transform);
                                               
@@ -183,22 +195,19 @@ public class WorldGeneration : MonoBehaviour
     // instantiate rooms in world
     void FillNodes()
     {
-        int count = 1;
+        int roomNumber = 1;
 
         foreach (GameObject node in worldNodes)
         {
-            bool north = false;
-            bool east = false;
-            bool south = false;
-            bool west = false;
+            NodeController nc = node.GetComponent<NodeController>();
             
-            if (count == 1)
+            if (roomNumber == 1)
             {
                 // starting elevator room
                 startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
 
                 // start elevator
-                if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
+                if (!startElevator)
                 {
                     startElevator = Instantiate(elevatorPrefab);
 
@@ -214,15 +223,15 @@ public class WorldGeneration : MonoBehaviour
                 startElevator.transform.position = startElevatorRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
 
                 // set walls to open
-                south = true;
+                nc.south = true;
             }
-            else if (count == worldNodes.Count)
+            else if (roomNumber == worldNodes.Count)
             {
                 // boss room
                 bossRoom = Instantiate(bossRoomPrefab, node.transform);
 
                 // end elevator
-                if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() == 1)
+                if (!endElevator)
                 {
                     endElevator = Instantiate(elevatorPrefab);
 
@@ -241,7 +250,7 @@ public class WorldGeneration : MonoBehaviour
                 endElevator.transform.position = bossRoom.GetComponent<ElevatorRoomController>().elevatorPosition.position;
 
                 // set walls to open
-                north = true;
+                nc.north = true;
             }
             else
             {
@@ -249,91 +258,133 @@ public class WorldGeneration : MonoBehaviour
                 Instantiate(roomPrefab, node.transform);
             }
 
-            // Check rooms for potential wall positions
-            foreach (GameObject room in worldNodes)
-            {
-                // if a room is to the north
-                if (Equals(room.transform.position, node.transform.position + new Vector3(0, 0, 10)))
-                {
-                    north = true;
-                }
-                // if a room is to the south
-                if (Equals(room.transform.position, node.transform.position - new Vector3(0, 0, 10)))
-                {
-                    south = true;
-                }
-                // if a room is to the east
-                if (Equals(room.transform.position, node.transform.position + new Vector3(10, 0, 0)))
-                {
-                    east = true;
-                }
-                // if a room is to the west
-                if (Equals(room.transform.position, node.transform.position - new Vector3(10, 0, 0)))
-                {
-                    west = true;
-                }
-            }
-
-            // make list of potential side rooms
-            // if theres a room to north and a room to the south
-            if (north == true && south == true)
-            {
-                // if theres no room to the east
-                if (east == false)
-                {
-                    SideRoomInfo sideRoomInfo = new SideRoomInfo(node, true);
-
-                    potentialSideRooms.Add(sideRoomInfo);
-
-                    east = true;
-
-                    GameObject sideRoom = Instantiate(sideRoomPrefab, node.transform);
-
-                    sideRoom.transform.position = node.transform.position + new Vector3(10, 0, 0);
-                }
-                // if theres no room to the west
-                if (west == false)
-                {
-                    SideRoomInfo sideRoomInfo = new SideRoomInfo(node, false);
-
-                    potentialSideRooms.Add(sideRoomInfo);
-
-                    west = true;
-
-                    GameObject sideRoom = Instantiate(sideRoomPrefab, node.transform);
-
-                    sideRoom.transform.position = node.transform.position + new Vector3(-10, 0, 0);
-
-                    sideRoom.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
-                }
-            }
-
-            // instantiate walls
-            if (!north)
-            {
-                Instantiate(wallPrefab, node.GetComponent<NodeController>().northWall);
-            }
-            if (!east)
-            {
-                Instantiate(wallPrefab, node.GetComponent<NodeController>().eastWall);
-            }
-            if (!south)
-            {
-                Instantiate(wallPrefab, node.GetComponent<NodeController>().southWall);
-            }
-            if (!west)
-            {
-                Instantiate(wallPrefab, node.GetComponent<NodeController>().westWall);
-            }
-
-            count++;
+            roomNumber++;
         }
         
         if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() != 1)
         {
             player.transform.position = new Vector3(startElevator.transform.position.x + pc.positionDifference.x, startElevator.transform.position.y + 2, startElevator.transform.position.z + pc.positionDifference.z);
         }
+    }
+    
+    private void FindWallPositions()
+    {
+        foreach (GameObject node in worldNodes)
+        {
+            NodeController nc = node.GetComponent<NodeController>();
 
-        count = 1;
+            // Check rooms for potential wall positions
+            foreach (GameObject room in worldNodes)
+            {
+                // if a room is to the north
+                if (Equals(room.transform.position, node.transform.position + new Vector3(0, 0, 10)))
+                {
+                    nc.north = true;
+                }
+                // if a room is to the south
+                if (Equals(room.transform.position, node.transform.position - new Vector3(0, 0, 10)))
+                {
+                    nc.south = true;
+                }
+                // if a room is to the east
+                if (Equals(room.transform.position, node.transform.position + new Vector3(10, 0, 0)))
+                {
+                    nc.east = true;
+                }
+                // if a room is to the west
+                if (Equals(room.transform.position, node.transform.position - new Vector3(10, 0, 0)))
+                {
+                    nc.west = true;
+                }
+            }
+        }
+    }
+
+    private void GenerateSideRooms()
+    {
+        // find potential side rooms
+        foreach (GameObject node in worldNodes)
+        {
+            NodeController nc = node.GetComponent<NodeController>();
+
+            if (nc.north == true && nc.south == true)
+            {
+                // if theres no room to the east
+                if (nc.east == false)
+                {
+                    SideRoomInfo sideRoomInfo = new SideRoomInfo(node, true);
+
+                    potentialSideRooms.Add(sideRoomInfo);
+                }
+                // if theres no room to the west
+                if (nc.west == false)
+                {
+                    SideRoomInfo sideRoomInfo = new SideRoomInfo(node, false);
+
+                    potentialSideRooms.Add(sideRoomInfo);                
+                }
+            }
+        }
+
+        int sideRoomSpacing = potentialSideRooms.Count / maxSideRooms;
+
+        for (int index = 0; index < maxSideRooms; index++)
+        {
+            // find next floor room to place a side room in
+            int rng = Random.Range((index * sideRoomSpacing), ((index + 1) * sideRoomSpacing));
+
+            // add room to side rooms list
+            sideRooms.Add(potentialSideRooms[rng]);            
+        }
+
+        foreach (SideRoomInfo info in sideRooms)
+        {
+            NodeController nc = info.node.GetComponent<NodeController>();
+
+            if (info.isToEast)
+            {
+                nc.east = true;
+
+                GameObject sideRoom = Instantiate(sideRoomPrefab, info.node.transform);
+
+                sideRoom.transform.position = info.node.transform.position + new Vector3(10, 0, 0);
+            }
+            else
+            {
+                nc.west = true;
+
+                GameObject sideRoom = Instantiate(sideRoomPrefab, info.node.transform);
+
+                sideRoom.transform.position = info.node.transform.position + new Vector3(-10, 0, 0);
+
+                sideRoom.transform.Rotate(new Vector3(0, 180, 0), Space.Self);
+            }
+        }
+    }
+
+    private void GenerateWalls()
+    {
+        foreach (GameObject node in worldNodes)
+        {
+            NodeController nc = node.GetComponent<NodeController>();
+
+            // instantiate walls
+            if (!nc.north)
+            {
+                Instantiate(wallPrefab, node.GetComponent<NodeController>().northWall);
+            }
+            if (!nc.east)
+            {
+                Instantiate(wallPrefab, node.GetComponent<NodeController>().eastWall);
+            }
+            if (!nc.south)
+            {
+                Instantiate(wallPrefab, node.GetComponent<NodeController>().southWall);
+            }
+            if (!nc.west)
+            {
+                Instantiate(wallPrefab, node.GetComponent<NodeController>().westWall);
+            }
+        }
     }
 }
