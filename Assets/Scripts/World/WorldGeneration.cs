@@ -49,6 +49,7 @@ public class WorldGeneration : MonoBehaviour
     public GameObject elevatorPrefab;
     public GameObject teleporterRoomPrefab;
     public GameObject wallPrefab;
+    public GameObject chestPrefab;
     
     private GameObject player;
     private PlayerController pc;
@@ -69,8 +70,10 @@ public class WorldGeneration : MonoBehaviour
         pp = player.GetComponent<Profile>();
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
-        levelLength = pp.floorLength;
-        maxSideRooms = pp.sideRoomCount;
+        pp.SetExplorer();
+
+        levelLength = (int)pp.floorLength;
+        maxSideRooms = (int)pp.sideRoomCount;
 
         generatedFloor = pc.playerFloor;
 
@@ -110,7 +113,7 @@ public class WorldGeneration : MonoBehaviour
     void GenerateWorld()
     {
         // fill world
-        GenerateNodes();
+        GenerateWorldNodes();
 
         // populate room nodes with rooms
         FillNodes();
@@ -127,14 +130,13 @@ public class WorldGeneration : MonoBehaviour
         // find potential wall positions in side rooms
 
         FindSideRoomWallPositions();
-
-
+               
         // populate rooms with walls
         GenerateWalls();
     }
 
     // set world node positions
-    void GenerateNodes()
+    void GenerateWorldNodes()
     {
         NodeInfo newPos = new NodeInfo(new Vector3(0, 0, 0), transform.position);
 
@@ -220,6 +222,8 @@ public class WorldGeneration : MonoBehaviour
                 // starting elevator room
                 startElevatorRoom = Instantiate(startRoomPrefab, node.transform);
 
+                startElevator = GameObject.FindGameObjectWithTag("StartElevator");
+
                 // start elevator
                 if (!startElevator)
                 {
@@ -229,8 +233,6 @@ public class WorldGeneration : MonoBehaviour
 
                     startElevator.gameObject.tag = "StartElevator";
                 }
-
-                startElevator = GameObject.FindGameObjectWithTag("StartElevator");
 
                 startElevator.GetComponent<ElevatorController>().elevatorFloor = generatedFloor;
 
@@ -244,6 +246,8 @@ public class WorldGeneration : MonoBehaviour
                 // boss room
                 bossRoom = Instantiate(bossRoomPrefab, node.transform);
 
+                endElevator = GameObject.FindGameObjectWithTag("EndElevator");
+
                 // end elevator
                 if (!endElevator)
                 {
@@ -255,9 +259,6 @@ public class WorldGeneration : MonoBehaviour
 
                     endElevator.gameObject.tag = "EndElevator";
                 }
-
-                // after floor one dont make a new elevator
-                endElevator = GameObject.FindGameObjectWithTag("EndElevator");
 
                 endElevator.GetComponent<ElevatorController>().elevatorFloor = generatedFloor;
 
@@ -422,7 +423,7 @@ public class WorldGeneration : MonoBehaviour
             GameObject teleporterDestinationRoomNode = Instantiate(worldNodePrefab, teleporterRoomNode.transform);
             GameObject teleporterDestinationRoom = Instantiate(teleporterRoomPrefab, teleporterDestinationRoomNode.transform);
                        
-            teleporterDestinationRoomNode.transform.position = new Vector3(0, -(generatedFloor + (i * 10)) - 10, 0);
+            teleporterDestinationRoomNode.transform.position = new Vector3(0, -(((generatedFloor - 1) * 100) + (i * 10)) - 10, 0);
 
             sideRooms[i].nodes.Add(teleporterDestinationRoomNode);
 
@@ -434,6 +435,8 @@ public class WorldGeneration : MonoBehaviour
             tdrt.sideRoom = true;
             trt.destination = tdrt.portal.position;
             tdrt.destination = trt.portal.position;
+
+            pp.AddSideRoomToTotal();
         }
     }
 
@@ -461,7 +464,7 @@ public class WorldGeneration : MonoBehaviour
 
                 if (i == sideRoomLength - 1)
                 {
-
+                    GameObject chest = Instantiate(chestPrefab, nextRoomNode.transform);
                 }
             }
         }

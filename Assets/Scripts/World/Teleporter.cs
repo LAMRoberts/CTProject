@@ -11,6 +11,8 @@ public class Teleporter : MonoBehaviour
     public bool sideRoom = false;
     public bool online = false;
 
+    private bool explored = false;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -39,6 +41,13 @@ public class Teleporter : MonoBehaviour
             player.transform.rotation = transform.rotation;
 
             online = false;
+        }
+
+        if (!sideRoom && !explored)
+        {
+            explored = true;
+
+            player.GetComponent<Profile>().CompletedSideRoom();
         }
     }
 
