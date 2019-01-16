@@ -4,28 +4,18 @@ using UnityEngine;
 
 public class HUDController : MonoBehaviour
 {
-    public Canvas nextFloor;
-    public Canvas previousFloor;
-
-    private Canvas next;
-    private Canvas previous;
+    public Canvas activatePrefab;
+    private Canvas activate;
 
     private void Start()
     {
-        next = Instantiate(nextFloor, transform);
-        previous = Instantiate(previousFloor, transform);
+        activate = Instantiate(activatePrefab, transform);
 
-        next.enabled = false;
-        previous.enabled = false;
+        activate.enabled = false;
     }
 
-    public void NextFloor()
+    public void Activate(bool on)
     {
-        next.enabled = !next.enabled;
-    }
-
-    public void PreviousFloor()
-    {
-        previous.enabled = !previous.enabled;
+        activate.enabled = on;
     }
 }

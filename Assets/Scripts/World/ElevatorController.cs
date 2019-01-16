@@ -111,13 +111,13 @@ public class ElevatorController : MonoBehaviour
 
         if (whichOne == Elevator.PREVIOUS)
         {
-            hud.GetComponent<HUDController>().PreviousFloor();
+            //hud.GetComponent<HUDController>().Activate(true);
 
             player.GetComponent<PlayerController>().inElevator = whichOne;
         }
         else if (whichOne == Elevator.NEXT)
         {
-            hud.GetComponent<HUDController>().NextFloor();
+            hud.GetComponent<HUDController>().Activate(true);
 
             player.GetComponent<PlayerController>().inElevator = whichOne;
         }
@@ -127,11 +127,11 @@ public class ElevatorController : MonoBehaviour
     {
         if (whichOne == Elevator.PREVIOUS)
         {
-            hud.GetComponent<HUDController>().PreviousFloor();
+            //hud.GetComponent<HUDController>().Activate(false);
         }
         else if (whichOne == Elevator.NEXT)
         {
-            hud.GetComponent<HUDController>().NextFloor();
+            hud.GetComponent<HUDController>().Activate(false);
         }
     }
 

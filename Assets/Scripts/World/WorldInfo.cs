@@ -30,7 +30,7 @@ public class WorldInfo : MonoBehaviour
         {
             GameObject level = Instantiate(levelPrefab);
 
-            level.transform.position = new Vector3(0, 0 - (lowestFloor * 100), 0);
+            level.transform.position = new Vector3(0, 0 - ((lowestFloor - 1) * 100), 0);
 
             levels.Add(level);
 
