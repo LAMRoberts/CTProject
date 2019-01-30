@@ -34,6 +34,9 @@ public class EnemyController : MonoBehaviour
 
     private float attackPower = 0.0f;
 
+    private bool playerInView = false;
+    private Vector3 lastKnownPosition = new Vector3(0, 0, 0);
+
     [SerializeField]
     private float timeSinceLastAttack = 0.0f;
     public float TimeBetweenAttacks = 3.0f;
@@ -60,7 +63,7 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         distanceToPlayer = (player.transform.position - transform.position).magnitude;
-        targetPosition = new Vector3(player.transform.position.x, 0.0f, player.transform.position.z);
+        targetPosition = new Vector3(lastKnownPosition.x, 0.0f, lastKnownPosition.z);
 
         switch (state)
         {
@@ -118,13 +121,25 @@ public class EnemyController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, Mathf.Infinity))
         {
-            if (hit.collider.gameObject.tag == "Player" && hit.distance < viewRange)
+            if (hit.collider.gameObject.tag == "Player")
             {
-                Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
-
-                if (state != State.COMBAT)
+                if (hit.distance < viewRange)
                 {
-                    state = State.COMBAT;
+                    Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
+
+                    if (state != State.COMBAT)
+                    {
+                        state = State.COMBAT;
+                    }
+
+                    playerInView = true;
+                    lastKnownPosition = player.transform.position;
+                }
+                else
+                {
+                    Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.yellow);
+
+                    playerInView = false;
                 }
             }
             else
