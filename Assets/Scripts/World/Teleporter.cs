@@ -30,13 +30,6 @@ public class Teleporter : MonoBehaviour
 
             ActorTeleport at = other.GetComponent<ActorTeleport>();
 
-            if (at.GetSideRoom() == sideRoom)
-            {
-                other.transform.position = destination;
-
-                other.transform.rotation = transform.rotation;
-            }
-
             if (other.tag == "Player")
             {
                 if (!sideRoom && !explored)
@@ -45,6 +38,20 @@ public class Teleporter : MonoBehaviour
 
                     player.GetComponent<Profile>().CompletedSideRoom();
                 }
+            }
+            else
+            {
+                if (player.GetComponent<ActorTeleport>().GetSideRoom() == sideRoom)
+                {
+                    return;
+                }
+            }
+
+            if (at.GetSideRoom() == sideRoom)
+            {
+                other.transform.position = destination;
+
+                other.transform.rotation = transform.rotation;
             }
         }
     }
