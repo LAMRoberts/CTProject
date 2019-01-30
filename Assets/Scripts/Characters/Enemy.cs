@@ -9,7 +9,7 @@ public enum State
     DEAD
 }
 
-public class EnemyController : MonoBehaviour
+public class Enemy : Actor
 {
     private GameObject player;
     private MeshRenderer r;
@@ -63,7 +63,7 @@ public class EnemyController : MonoBehaviour
     private void Update()
     {
         distanceToPlayer = (player.transform.position - transform.position).magnitude;
-        targetPosition = new Vector3(lastKnownPosition.x, 0.0f, lastKnownPosition.z);
+        targetPosition = new Vector3(lastKnownPosition.x, transform.position.y, lastKnownPosition.z);
 
         switch (state)
         {
@@ -77,8 +77,6 @@ public class EnemyController : MonoBehaviour
                 }
             case State.COMBAT:
                 {
-                    r.material.color = Color.yellow;
-
                     TargetInRange();
 
                     if (!committed)
@@ -108,7 +106,7 @@ public class EnemyController : MonoBehaviour
                 }
             case State.DEAD:
                 {
-                    r.material.color = Color.red;
+                    r.material.color = Color.black;
 
                     break;
                 }
@@ -123,9 +121,12 @@ public class EnemyController : MonoBehaviour
         {
             if (hit.collider.gameObject.tag == "Player")
             {
+                targetPosition = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+
                 if (hit.distance < viewRange)
                 {
                     Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
+                    r.material.color = Color.red;
 
                     if (state != State.COMBAT)
                     {
@@ -138,6 +139,7 @@ public class EnemyController : MonoBehaviour
                 else
                 {
                     Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.yellow);
+                    r.material.color = Color.yellow;
 
                     playerInView = false;
                 }

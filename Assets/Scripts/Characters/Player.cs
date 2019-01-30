@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class Player : Actor
 {
     public float maxAttackPower = 100.0f;
     public float attackChargeRate = 0.5f;
-
-    public int health = 100;
 
     private float attackPower = 0.0f;
     public float staminaCostMultiplier = 0.2f;
@@ -35,7 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown("h"))
         {
-            GetHit(15);
+            TakeDamage(15);
         }
 
         Attack();
@@ -94,18 +92,6 @@ public class PlayerController : MonoBehaviour
         sc.UpdateColour(attackPower / 100);
 
         attacking = sc.UpdateSword(attacking, charging);
-    }
-
-    void GetHit(int value)
-    {
-        if (health >= value)
-        {
-            health -= value;
-        }
-        else
-        {
-            health = 0;
-        }
     }
 
     void SetPlayerInElevator(Elevator value)

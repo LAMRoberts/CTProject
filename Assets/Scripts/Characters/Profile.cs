@@ -93,22 +93,22 @@ public class Profile : MonoBehaviour
     {
         if (sideRoomCompleteProbability > 75.0f)
         {
-            floorLength = floorLength * 1.5f;
+            floorLength = floorLength + 5;
 
-            sideRoomCount = sideRoomCount * 1.5f;
+            sideRoomCount = sideRoomCount + 2;
         }
         else if (sideRoomCompleteProbability < 75.0f && sideRoomCompleteProbability > 50.0f)
         {
-            floorLength = floorLength * 1.25f;
+            floorLength = floorLength + 3;
 
-            sideRoomCount = sideRoomCount * 1.25f;
+            sideRoomCount = sideRoomCount + 1;
         }
-        else if (sideRoomCompleteProbability < 50.0f && sideRoomCompleteProbability > 25.0f)
-        {
-            floorLength = floorLength * 1.1f;
+        //else if (sideRoomCompleteProbability < 50.0f && sideRoomCompleteProbability > 25.0f)
+        //{
+        //    floorLength = floorLength * 1.1f;
 
-            sideRoomCount = sideRoomCount * 1.1f;
-        }
+        //    sideRoomCount = sideRoomCount * 1.1f;
+        //}
         else
         {
             if (floorLength > 8.0f)

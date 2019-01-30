@@ -3,7 +3,25 @@ guid: dac5b392e9420a146ba387ab149ec4ad
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - worldNodePrefab: {fileID: 1824640752257954, guid: d6f28d5c619870b42abcd3a4a6ea818b,
+      type: 2}
+  - roomPrefab: {fileID: 1220670854365832, guid: f509083abaccd0840a0891588ba5c438,
+      type: 2}
+  - bossRoomPrefab: {fileID: 1429716063142182, guid: 0804b3be185340d469106c4754532bc6,
+      type: 2}
+  - startRoomPrefab: {fileID: 1719978235365154, guid: 62d383299ba2a254cb398334f48fed6e,
+      type: 2}
+  - elevatorPrefab: {fileID: 1610739361160646, guid: 4e87e8118d520cc4d9a896a6b3774afb,
+      type: 2}
+  - teleporterRoomPrefab: {fileID: 1397478033212414, guid: 3a88cad26e9aafa49960493dd1231746,
+      type: 2}
+  - wallPrefab: {fileID: 1191685098451246, guid: 908355484a27c714794e5042771b7d78,
+      type: 2}
+  - chestPrefab: {fileID: 1049603875013198, guid: 3658152d9f981b84ea76a7db08159952,
+      type: 2}
+  - startElevator: {instanceID: 0}
+  - endElevator: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -20,7 +20,7 @@ public class ChestController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        hud = player.GetComponent<PlayerController>().hud;
+        hud = player.GetComponent<Player>().hud;
     }
 
     private void Update()
