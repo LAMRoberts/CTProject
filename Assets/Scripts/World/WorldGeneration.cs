@@ -431,7 +431,6 @@ public class WorldGeneration : MonoBehaviour
             Teleporter trt = teleporterRoom.GetComponent<Teleporter>();
             Teleporter tdrt = teleporterDestinationRoom.GetComponent<Teleporter>();
 
-            trt.online = true;
             tdrt.sideRoom = true;
             trt.destination = tdrt.portal.position;
             tdrt.destination = trt.portal.position;

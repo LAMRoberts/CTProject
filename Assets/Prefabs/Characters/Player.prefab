@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 54867505552115816}
   - component: {fileID: 114836180255828924}
   - component: {fileID: 114689765375033124}
+  - component: {fileID: 114190493085848482}
   - component: {fileID: 114981418679689532}
   m_Layer: 0
   m_Name: Player
@@ -534,6 +535,17 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1429000736599234}
   m_Enabled: 1
+--- !u!114 &114190493085848482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1846717036070772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486951489f2d2b741bfe78730a832582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114382536878110026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -597,7 +609,6 @@ MonoBehaviour:
   attackChargeRate: 2
   health: 100
   staminaCostMultiplier: 3
-  inSideRoom: 0
   hudPrefab: {fileID: 223415165919912928, guid: 00af4b0cb122ff94a973fb64c36653e6,
     type: 2}
   hud: {fileID: 0}
@@ -627,8 +638,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab16f9b3ea5f45c428f467e85fb61f13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorLength: 10
-  sideRoomCount: 2
+  floorLength: 5
+  sideRoomCount: 1
   sideRoomCompleteProbability: 0
   enemyProbability: 20
   maxEnemiesOnFloor: 10

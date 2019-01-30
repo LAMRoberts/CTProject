@@ -383,9 +383,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'spawn side room loot
-
-    spawn main room loot
+  m_Text: 'spawn main room loot
 
     spawn enemies
 

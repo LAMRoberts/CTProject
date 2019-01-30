@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     private bool attacking = false;
     private bool charging = false;
     private bool shouldConsumeStamina = false;
-    public bool inSideRoom = false;
 
     public Canvas hudPrefab;
     public Canvas hud;

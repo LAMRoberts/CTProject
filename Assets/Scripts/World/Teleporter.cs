@@ -9,7 +9,6 @@ public class Teleporter : MonoBehaviour
     public GameObject player;
 
     public bool sideRoom = false;
-    public bool online = false;
 
     private bool explored = false;
 
@@ -25,47 +24,38 @@ public class Teleporter : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (online)
+        if (other.GetComponent<ActorTeleport>())
         {
-            if (sideRoom)
+            Debug.Log("Actor Teleporting");
+
+            ActorTeleport at = other.GetComponent<ActorTeleport>();
+
+            if (at.GetSideRoom() == sideRoom)
             {
-                player.GetComponent<PlayerController>().inSideRoom = false;
+                other.transform.position = destination;
+
+                other.transform.rotation = transform.rotation;
             }
-            else
+
+            if (other.tag == "Player")
             {
-                player.GetComponent<PlayerController>().inSideRoom = true;
+                if (!sideRoom && !explored)
+                {
+                    explored = true;
+
+                    player.GetComponent<Profile>().CompletedSideRoom();
+                }
             }
-
-            player.transform.position = destination;
-
-            player.transform.rotation = transform.rotation;
-
-            online = false;
-        }
-
-        if (!sideRoom && !explored)
-        {
-            explored = true;
-
-            player.GetComponent<Profile>().CompletedSideRoom();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (sideRoom)
+        if (other.GetComponent<ActorTeleport>())
         {
-            if (player.GetComponent<PlayerController>().inSideRoom)
-            {
-                online = true;
-            }
-        }
-        else
-        {
-            if (!player.GetComponent<PlayerController>().inSideRoom)
-            {
-                online = true;
-            }
+            ActorTeleport at = other.GetComponent<ActorTeleport>();
+
+            at.SetSideRoom(sideRoom);
         }
     }
 }
