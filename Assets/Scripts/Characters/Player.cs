@@ -31,12 +31,15 @@ public class Player : Actor
 
     private void LateUpdate()
     {
-        if (Input.GetKeyDown("h"))
+        if (!dead)
         {
-            TakeDamage(15);
-        }
+            if (Input.GetKeyDown("h"))
+            {
+                TakeDamage(15);
+            }
 
-        Attack();
+            Attack();
+        }
     }
 
     private void Attack()

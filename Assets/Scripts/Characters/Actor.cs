@@ -12,7 +12,9 @@ public class Actor : MonoBehaviour
     private float stamina;
     [SerializeField]
     private bool inSideRoom = false;
-    
+
+    protected bool dead = false;
+
     #region Getters
 
     public float GetHealth()
@@ -45,7 +47,16 @@ public class Actor : MonoBehaviour
         else
         {
             health = 0.0f;
+
+            Murder();
         }
+    }
+
+    protected virtual void Murder()
+    {
+        dead = true;
+
+        Debug.Log("DED");
     }
 
     public void SetSideRoom(bool sr)

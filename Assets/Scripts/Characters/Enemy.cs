@@ -44,6 +44,9 @@ public class Enemy : Actor
     private bool committed = false;
     private bool attackReady = false;
 
+    public PhysicMaterial physicsMaterial;
+    private bool droppedSword = false;
+
     private void Start()
     {
         // get player
@@ -67,6 +70,11 @@ public class Enemy : Actor
     {
         distanceToPlayer = (player.transform.position - transform.position).magnitude;
         targetPosition = new Vector3(lastKnownPosition.x, transform.position.y, lastKnownPosition.z);
+
+        if (dead)
+        {
+            state = State.DEAD;
+        }
 
         switch (state)
         {
@@ -109,7 +117,18 @@ public class Enemy : Actor
                 }
             case State.DEAD:
                 {
-                    r.material.color = Color.black;
+                    if (!droppedSword)
+                    {
+                        r.material.color = Color.black;
+
+                        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+
+                        GetComponent<CapsuleCollider>().material = physicsMaterial;
+
+                        DropSword();
+
+                        droppedSword = true;
+                    }
 
                     break;
                 }
@@ -229,6 +248,25 @@ public class Enemy : Actor
 
             attackPower = 0.0f;
         }
+    }
+
+    void DropSword()
+    {
+        GameObject sword = GetComponentInChildren<SwordController>().gameObject;
+
+        Rigidbody rb = sword.AddComponent<Rigidbody>();
+
+        rb.useGravity = true;
+
+        rb.mass = 10.0f;
+
+        rb.drag = 4.0f;
+
+        rb.angularDrag = 1.0f;
+
+        sword.GetComponent<CapsuleCollider>().enabled = true;
+
+        sword.transform.SetParent(null);
     }
 
     private int GetUINumber()

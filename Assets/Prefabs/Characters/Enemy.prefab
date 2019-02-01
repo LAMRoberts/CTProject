@@ -319,6 +319,7 @@ GameObject:
   - component: {fileID: 33157174821620602}
   - component: {fileID: 23434426929826064}
   - component: {fileID: 114613560693989658}
+  - component: {fileID: 136079686518827926}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -1091,9 +1092,9 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1433530488579770}
   serializedVersion: 2
-  m_Mass: 10000
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 10
+  m_Drag: 4
+  m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1154,6 +1155,7 @@ MonoBehaviour:
   TimeBetweenAttacks: 0.1
   attackChargeRate: 2
   maxAttackPower: 100
+  physicsMaterial: {fileID: 13400000, guid: 27a2ddef2b8dc0b449535ac6a3bc0be9, type: 2}
 --- !u!114 &114475233474796868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1202,6 +1204,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   me: {fileID: 1433530488579770}
   damage: 10
+--- !u!136 &136079686518827926
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1965775798599716}
+  m_Material: {fileID: 13400000, guid: 27a2ddef2b8dc0b449535ac6a3bc0be9, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  m_Radius: 1
+  m_Height: 22.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 8.25, z: 0}
 --- !u!136 &136092405366971010
 CapsuleCollider:
   m_ObjectHideFlags: 1
