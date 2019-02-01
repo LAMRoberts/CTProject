@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class UIHealthBarController : MonoBehaviour
 {
-    public GameObject player;
-    private Actor actor;
+    public GameObject character;
+    private Actor actorController;
 
     [SerializeField]
     private float health = 100.0f;
@@ -14,17 +14,28 @@ public class UIHealthBarController : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        actor = player.GetComponent<Actor>();
+        if (character == null)
+        {
+            character = GameObject.FindGameObjectWithTag("Player");
+            actorController = character.GetComponent<Actor>();
+        }
     }
 
     void Update ()
     {
-        if (health != actor.GetHealth())
+        if (health != actorController.GetHealth())
         {
-            health = actor.GetHealth();
+            health = actorController.GetHealth();
 
             healthBar.transform.localScale = new Vector3(health / 100, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
         }
 	}
+
+    public void SetActor(GameObject a)
+    {
+        character = a;
+        actorController = character.GetComponent<Actor>();
+
+        Debug.Log("Health Bar Assigned");
+    }
 }

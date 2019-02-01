@@ -23,7 +23,7 @@ public class Profile : MonoBehaviour
 
     private float totalSearchableRooms = 0;               // number of searchable rooms generated
     private float roomsSearched = 0;                      // number of rooms searched
-    private float roomSearchProbability = 0.0f;         // probability of player to search room
+    //private float roomSearchProbability = 0.0f;         // probability of player to search room
 
     private float totalSideRooms = 0;                     // number of side rooms generated
     private float sideRoomsComplete = 0;                  // number of side rooms searched
@@ -38,7 +38,7 @@ public class Profile : MonoBehaviour
 
     private int totalEnemiesSpawned = 0;                // total enemies spawned
     private int enemiesKilled = 0;                      // total enemies killed
-    private float enemyKillProbability = 0.0f;          // probability that the player will kill an enemy
+    //private float enemyKillProbability = 0.0f;          // probability that the player will kill an enemy
     private int highestDifficultyEnemyKilled = 0;       // highest level enemy player has killed
     private int highestDifficultyBossKilled = 0;        // highest level boss player has killed
 
@@ -81,7 +81,7 @@ public class Profile : MonoBehaviour
     // regeneration
     private void RecalculateRoomSearchProbability()
     {
-        roomSearchProbability = (roomsSearched / totalSearchableRooms) * 100.0f;
+        //roomSearchProbability = (roomsSearched / totalSearchableRooms) * 100.0f;
     }
 
     private void RecalculateSideRoomCompleteProbability()

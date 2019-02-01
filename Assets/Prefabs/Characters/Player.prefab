@@ -54,6 +54,8 @@ GameObject:
   - component: {fileID: 114492296374868430}
   - component: {fileID: 198542581666595332}
   - component: {fileID: 199041100564671940}
+  - component: {fileID: 65226622674714790}
+  - component: {fileID: 114022469823104632}
   m_Layer: 0
   m_Name: SwordBlade
   m_TagString: Untagged
@@ -567,7 +569,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1842170148718966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.26, y: 1.2, z: -223.55}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 4244118076462626}
@@ -1257,6 +1259,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!65 &65226622674714790
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049630485685064}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 20, z: 2}
+  m_Center: {x: 0, y: -3, z: 0.0027142763}
 --- !u!81 &81838758168854184
 AudioListener:
   m_ObjectHideFlags: 1
@@ -1282,6 +1296,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114022469823104632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049630485685064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f657ee5d163eada4f91f3027e6b084e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  me: {fileID: 1842170148718966}
+  damage: 10
 --- !u!114 &114310188474790242
 MonoBehaviour:
   m_ObjectHideFlags: 1

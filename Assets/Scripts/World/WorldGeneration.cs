@@ -459,11 +459,11 @@ public class WorldGeneration : MonoBehaviour
 
                 nextRoomNode.transform.position = newPos.nextPosition;
 
-                GameObject nextRoom = Instantiate(roomPrefab, nextRoomNode.transform);
+                Instantiate(roomPrefab, nextRoomNode.transform);
 
                 if (i == sideRoomLength - 1)
                 {
-                    GameObject chest = Instantiate(chestPrefab, nextRoomNode.transform);
+                    Instantiate(chestPrefab, nextRoomNode.transform);
                 }
             }
         }

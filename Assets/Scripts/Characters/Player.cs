@@ -29,7 +29,7 @@ public class Player : Actor
         positionDifference = new Vector3(0, 0, 0);
     }
 
-    private void LateUpdate ()
+    private void LateUpdate()
     {
         if (Input.GetKeyDown("h"))
         {

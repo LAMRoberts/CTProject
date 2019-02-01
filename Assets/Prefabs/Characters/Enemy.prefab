@@ -73,6 +73,8 @@ GameObject:
   - component: {fileID: 114475233474796868}
   - component: {fileID: 198840517143501374}
   - component: {fileID: 199506053810367924}
+  - component: {fileID: 65847401984008918}
+  - component: {fileID: 114950571210571550}
   m_Layer: 0
   m_Name: SwordBlade
   m_TagString: Untagged
@@ -126,6 +128,21 @@ GameObject:
   - component: {fileID: 23167361732928818}
   m_Layer: 0
   m_Name: pCylinder5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1357626704813118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4007087565604842}
+  m_Layer: 0
+  m_Name: HealthBarPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,6 +343,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!4 &4007087565604842
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1357626704813118}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4411583217331132}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4070539862719890
 Transform:
   m_ObjectHideFlags: 1
@@ -453,13 +483,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1433530488579770}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -16.8, y: 1.6, z: -210.9}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4281354555276896}
   - {fileID: 4070539862719890}
   - {fileID: 4097563611535428}
   - {fileID: 4126308655256308}
+  - {fileID: 4007087565604842}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -1068,6 +1099,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!65 &65847401984008918
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1282998594382134}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 12, z: 0.7}
+  m_Center: {x: 0, y: -0.4, z: 0.01}
 --- !u!95 &95575550253621272
 Animator:
   serializedVersion: 3
@@ -1101,20 +1144,16 @@ MonoBehaviour:
   damageResistance: 0
   stamina: 0
   inSideRoom: 0
+  healthBarPoint: {fileID: 4007087565604842}
   viewRange: 20
   combatRange: 10
   personalSpace: 4
+  speed: 10
   walkingSpeed: 2
   runningSpeed: 8
-  maxAttackPower: 100
-  attackChargeRate: 2
-  speed: 10
-  timeSinceLastAttack: 0
   TimeBetweenAttacks: 0.1
-  attacking: 0
-  charging: 0
-  committed: 0
-  attackReady: 0
+  attackChargeRate: 2
+  maxAttackPower: 100
 --- !u!114 &114475233474796868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1150,6 +1189,19 @@ MonoBehaviour:
   chargingRotation: 220
   attackingRotation: 100
   resettingRotation: 100
+--- !u!114 &114950571210571550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1282998594382134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f657ee5d163eada4f91f3027e6b084e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  me: {fileID: 1433530488579770}
+  damage: 10
 --- !u!136 &136092405366971010
 CapsuleCollider:
   m_ObjectHideFlags: 1
