@@ -9,58 +9,64 @@ public enum State
     DEAD
 }
 
-public class EnemyController : MonoBehaviour
+public class Enemy : Actor
 {
     private GameObject player;
     private MeshRenderer r;
     private SwordController sc;
+    private GameObject hud;
+    private HUDController hc;
 
     private State state = State.IDLE;
 
+    public Transform healthBarPoint;
+    private int healthBarNumber;
     public float viewRange = 10.0f;
     public float combatRange = 10.0f;
     public float personalSpace = 4.0f;
 
-    private float distanceToPlayer;
-    private Vector3 targetPosition;
-
+    public float speed = 10.0f;
     public float walkingSpeed = 10.0f;
     public float runningSpeed = 20.0f;
 
-    public float maxAttackPower = 100.0f;
-    public float attackChargeRate = 0.5f;
+    private Vector3 targetPosition;
+    private Vector3 lastKnownPosition = new Vector3(0, 0, 0);
+    private float distanceToPlayer;
 
-    public float speed = 10.0f;
+    public float TimeBetweenAttacks = 3.0f;
+    public float attackChargeRate = 0.5f;
+    public float maxAttackPower = 100.0f;
 
     private float attackPower = 0.0f;
-
-    [SerializeField]
     private float timeSinceLastAttack = 0.0f;
-    public float TimeBetweenAttacks = 3.0f;
-
-    [SerializeField]
     private bool attacking = false;
-    [SerializeField]
     private bool charging = false;
-    [SerializeField]
     private bool committed = false;
-    [SerializeField]
     private bool attackReady = false;
 
     private void Start()
     {
+        // get player
         player = GameObject.FindGameObjectWithTag("Player");
 
-        sc = gameObject.GetComponentInChildren<SwordController>();
+        // get sword controller
+        sc = GetComponentInChildren<SwordController>();
 
+        // set material colour
         r = GetComponent<MeshRenderer>();
         r.material.color = Color.green;
+
+        // set enemy health bar
+        hud = GameObject.FindGameObjectWithTag("HUD");
+        hc = hud.GetComponent<HUDController>();
+
+        hc.AddEnemyHealthBar(gameObject);
     }
 
     private void Update()
     {
         distanceToPlayer = (player.transform.position - transform.position).magnitude;
-        targetPosition = new Vector3(player.transform.position.x, 0.0f, player.transform.position.z);
+        targetPosition = new Vector3(lastKnownPosition.x, transform.position.y, lastKnownPosition.z);
 
         switch (state)
         {
@@ -74,8 +80,6 @@ public class EnemyController : MonoBehaviour
                 }
             case State.COMBAT:
                 {
-                    r.material.color = Color.yellow;
-
                     TargetInRange();
 
                     if (!committed)
@@ -105,7 +109,7 @@ public class EnemyController : MonoBehaviour
                 }
             case State.DEAD:
                 {
-                    r.material.color = Color.red;
+                    r.material.color = Color.black;
 
                     break;
                 }
@@ -118,18 +122,31 @@ public class EnemyController : MonoBehaviour
 
         if (Physics.Raycast(transform.position, (player.transform.position - transform.position), out hit, Mathf.Infinity))
         {
-            if (hit.collider.gameObject.tag == "Player" && hit.distance < viewRange)
+            if (hit.collider.gameObject.tag == "Player")
             {
-                Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
+                targetPosition = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
 
-                if (state != State.COMBAT)
+                if (hit.distance < viewRange)
                 {
-                    state = State.COMBAT;
+                    //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
+                    r.material.color = Color.red;
+
+                    if (state != State.COMBAT)
+                    {
+                        state = State.COMBAT;
+                    }
+
+                    lastKnownPosition = player.transform.position;
+                }
+                else
+                {
+                    //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.yellow);
+                    r.material.color = Color.yellow;
                 }
             }
             else
             {
-                Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.red);
+                //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.red);
             }
         }
     }
@@ -212,5 +229,15 @@ public class EnemyController : MonoBehaviour
 
             attackPower = 0.0f;
         }
+    }
+
+    private int GetUINumber()
+    {
+        return healthBarNumber;
+    }
+
+    private void SetUINumber(int no)
+    {
+        healthBarNumber = no;
     }
 }

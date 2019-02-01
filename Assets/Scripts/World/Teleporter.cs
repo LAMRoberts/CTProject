@@ -24,11 +24,11 @@ public class Teleporter : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<ActorTeleport>())
+        if (other.GetComponent<Actor>())
         {
             Debug.Log("Actor Teleporting");
 
-            ActorTeleport at = other.GetComponent<ActorTeleport>();
+            Actor actor = other.GetComponent<Actor>();
 
             if (other.tag == "Player")
             {
@@ -41,13 +41,13 @@ public class Teleporter : MonoBehaviour
             }
             else
             {
-                if (player.GetComponent<ActorTeleport>().GetSideRoom() == sideRoom)
+                if (player.GetComponent<Actor>().GetSideRoom() == sideRoom)
                 {
                     return;
                 }
             }
 
-            if (at.GetSideRoom() == sideRoom)
+            if (actor.GetSideRoom() == sideRoom)
             {
                 other.transform.position = destination;
 
@@ -58,11 +58,11 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<ActorTeleport>())
+        if (other.GetComponent<Actor>())
         {
-            ActorTeleport at = other.GetComponent<ActorTeleport>();
+            Actor actor = other.GetComponent<Actor>();
 
-            at.SetSideRoom(sideRoom);
+            actor.SetSideRoom(sideRoom);
         }
     }
 }

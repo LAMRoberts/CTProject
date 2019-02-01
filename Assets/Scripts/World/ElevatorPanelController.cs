@@ -7,7 +7,7 @@ public class ElevatorPanelController : MonoBehaviour
     public GameObject elevator;
     public ElevatorController ec;
     public GameObject player;
-    public PlayerController pc;
+    public Player pc;
 
     private void Start()
     {
@@ -17,7 +17,7 @@ public class ElevatorPanelController : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
 
-        pc = player.GetComponent<PlayerController>();
+        pc = player.GetComponent<Player>();
     }
 
     private void OnTriggerEnter(Collider other)

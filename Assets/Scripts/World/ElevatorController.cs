@@ -50,7 +50,7 @@ public class ElevatorController : MonoBehaviour
         rightOpenPosition = rightInternalDoor.transform.position;
 
         player = GameObject.FindGameObjectWithTag("Player");
-        hud = player.GetComponent<PlayerController>().hud;
+        hud = player.GetComponent<Player>().hud;
 
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
     }
@@ -113,13 +113,13 @@ public class ElevatorController : MonoBehaviour
         {
             //hud.GetComponent<HUDController>().Activate(true);
 
-            player.GetComponent<PlayerController>().inElevator = whichOne;
+            player.GetComponent<Player>().inElevator = whichOne;
         }
         else if (whichOne == Elevator.NEXT)
         {
             hud.GetComponent<HUDController>().Activate(true);
 
-            player.GetComponent<PlayerController>().inElevator = whichOne;
+            player.GetComponent<Player>().inElevator = whichOne;
         }
     }
 
@@ -151,15 +151,15 @@ public class ElevatorController : MonoBehaviour
         {
             Debug.Log("Elevator is at floor: " + elevatorFloor + ", Going Down");
 
-            player.GetComponent<PlayerController>().SetLevel(elevatorFloor + 1);
+            player.GetComponent<Player>().SetLevel(elevatorFloor + 1);
 
             worldInfo.GetComponent<WorldInfo>().SetLowestFloor(elevatorFloor + 1);
 
-            player.GetComponent<PlayerController>().positionDifference = transform.position - player.transform.position;
+            player.GetComponent<Player>().positionDifference = transform.position - player.transform.position;
         }
         else if (whichOne == Elevator.PREVIOUS)
         {
-            player.GetComponent<PlayerController>().SetLevel(elevatorFloor - 1);
+            player.GetComponent<Player>().SetLevel(elevatorFloor - 1);
         }
         else
         {

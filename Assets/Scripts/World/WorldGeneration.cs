@@ -52,7 +52,7 @@ public class WorldGeneration : MonoBehaviour
     public GameObject chestPrefab;
     
     private GameObject player;
-    private PlayerController pc;
+    private Player pc;
     private Profile pp;
 
     private GameObject startElevatorRoom;
@@ -66,7 +66,7 @@ public class WorldGeneration : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        pc = player.GetComponent<PlayerController>();
+        pc = player.GetComponent<Player>();
         pp = player.GetComponent<Profile>();
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
@@ -459,11 +459,11 @@ public class WorldGeneration : MonoBehaviour
 
                 nextRoomNode.transform.position = newPos.nextPosition;
 
-                GameObject nextRoom = Instantiate(roomPrefab, nextRoomNode.transform);
+                Instantiate(roomPrefab, nextRoomNode.transform);
 
                 if (i == sideRoomLength - 1)
                 {
-                    GameObject chest = Instantiate(chestPrefab, nextRoomNode.transform);
+                    Instantiate(chestPrefab, nextRoomNode.transform);
                 }
             }
         }
