@@ -36,7 +36,7 @@ public class Actor : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("Ow, What the fuck is wrong with you? Health: " + health);
+        Debug.Log("Ouch, What the fuck is wrong with you? Health: " + health);
 
         float dmg = damage - (damage * damageResistance);
 

@@ -5,8 +5,15 @@ using UnityEngine;
 public struct EnemyInfo
 {
     public bool isBoss;
-    public int difficulty;
+    public float difficulty;
     public int kills;
+
+    public EnemyInfo(bool boss, float hardness, int playerKills)
+    {
+        isBoss = boss;
+        difficulty = hardness;
+        kills = playerKills;
+    }
 }
 
 public class Profile : MonoBehaviour
@@ -17,34 +24,42 @@ public class Profile : MonoBehaviour
     //private float achiever = 0.0f;
     //private float socialiser = 0.0f;
 
+
     // explorer
-    public float floorLength = 10;                        // how many room on next floor
-    public float sideRoomCount = 2;                       // how many side rooms on next floor
+        // main rooms
+    public float floorLength = 10.0f;                       // how many room on next floor
+    public float sideRoomCount = 2.0f;                      // how many side rooms on next floor
 
-    private float totalSearchableRooms = 0;               // number of searchable rooms generated
-    private float roomsSearched = 0;                      // number of rooms searched
-    //private float roomSearchProbability = 0.0f;         // probability of player to search room
+    private float totalSearchableRooms = 0.0f;              // number of searchable rooms generated
+    private float roomsSearched = 0.0f;                     // number of rooms searched
+    private float roomSearchProbability = 0.0f;             // probability of player to search room
 
-    private float totalSideRooms = 0;                     // number of side rooms generated
-    private float sideRoomsComplete = 0;                  // number of side rooms searched
-    [SerializeField]
-    private float sideRoomCompleteProbability = 0.0f;   // probability that player will complete side rooms
+        // side rooms
+    private int totalSideRooms = 0;                         // number of side rooms generated
+    private int sideRoomsExplored = 0;                      // number of side rooms entered
 
 
     // killer
-    public float enemyProbability = 20.0f;              // how likely an enemy is to be spawned in each room on the next floor
-    public int maxEnemiesOnFloor = 10;                  // maximum limit to spawned enemies on the next floor
-    public int maxEnemyCount = 1;                       // maximum number of enemies to spawn in one room
+    public float enemyProbability = 20.0f;                  // how likely an enemy is to be spawned in each room on the next floor
+    public int maxEnemiesOnFloor = 10;                      // maximum limit to spawned enemies on the next floor
+    public int maxEnemyCount = 1;                           // maximum number of enemies to spawn in one room
 
-    private int totalEnemiesSpawned = 0;                // total enemies spawned
-    private int enemiesKilled = 0;                      // total enemies killed
-    //private float enemyKillProbability = 0.0f;          // probability that the player will kill an enemy
-    private int highestDifficultyEnemyKilled = 0;       // highest level enemy player has killed
-    private int highestDifficultyBossKilled = 0;        // highest level boss player has killed
+    private int totalEnemiesSpawned = 0;                    // total enemies spawned
+    private int enemiesKilled = 0;                          // total enemies killed
+    private float enemyKillProbability = 0.0f;              // probability that the player will kill an enemy
+    private float highestDifficultyEnemyKilled = 0.0f;      // highest level enemy player has killed
+
+    private float highestDifficultyBossKilled = 0.0f;       // highest level boss player has killed
+
 
     // achiever
+    private int sideRoomsComplete = 0;                      // number of side rooms completed
+    private float sideRoomCompleteProbability = 0.0f;       // probability that the player will complete any side room
+    private float sideRoomAverageLikelihood = 0.0f;         // the average chest likelihood of side rooms that player has entered
+
 
     // socializer 
+
 
     #region Explorer
 
@@ -58,7 +73,7 @@ public class Profile : MonoBehaviour
 
     public void AddSideRoomToTotal()
     {
-        totalSideRooms = totalSideRooms + 1.0f;
+        totalSideRooms = totalSideRooms + 1;
 
         RecalculateSideRoomCompleteProbability();
     }
@@ -71,9 +86,14 @@ public class Profile : MonoBehaviour
         RecalculateRoomSearchProbability();
     }
 
+    public void ExploredSideRoom()
+    {
+
+    }
+
     public void CompletedSideRoom()
     {
-        sideRoomsComplete = sideRoomsComplete + 1.0f;
+        sideRoomsComplete = sideRoomsComplete + 1;
 
         RecalculateSideRoomCompleteProbability();
     }
@@ -81,7 +101,7 @@ public class Profile : MonoBehaviour
     // regeneration
     private void RecalculateRoomSearchProbability()
     {
-        //roomSearchProbability = (roomsSearched / totalSearchableRooms) * 100.0f;
+        roomSearchProbability = (roomsSearched / totalSearchableRooms) * 100.0f;
     }
 
     private void RecalculateSideRoomCompleteProbability()
@@ -159,7 +179,7 @@ public class Profile : MonoBehaviour
 
     private void RecalculateEnemyKillProbability()
     {
-        sideRoomCompleteProbability = (sideRoomsComplete / totalSideRooms) * 100;
+        sideRoomCompleteProbability = (sideRoomsComplete / totalSideRooms) * 100.0f;
     }
 
     #endregion

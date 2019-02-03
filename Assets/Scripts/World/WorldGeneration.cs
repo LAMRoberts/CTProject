@@ -29,6 +29,24 @@ public struct SideRoomInfo
     }
 }
 
+// totally unused, completely forgot how i was gonna use this
+public struct PortalInfo
+{
+    public GameObject mainPortal;
+    public GameObject sidePortal;
+    public float probability;
+    public GameObject chest;
+
+    // constructor
+    public PortalInfo(GameObject main, GameObject side, float chestChance, GameObject chestObj)
+    {
+        mainPortal = main;
+        sidePortal = side;
+        probability = chestChance;
+        chest = chestObj;
+    }
+}
+
 public class WorldGeneration : MonoBehaviour
 {
     public int generatedFloor = 1;
@@ -53,7 +71,7 @@ public class WorldGeneration : MonoBehaviour
     
     private GameObject player;
     private Player pc;
-    private Profile pp;
+    private Profile profile;
 
     private GameObject startElevatorRoom;
     public GameObject startElevator;
@@ -67,13 +85,13 @@ public class WorldGeneration : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         pc = player.GetComponent<Player>();
-        pp = player.GetComponent<Profile>();
+        profile = player.GetComponent<Profile>();
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
-        pp.SetExplorer();
+        profile.SetExplorer();
 
-        levelLength = (int)pp.floorLength;
-        maxSideRooms = (int)pp.sideRoomCount;
+        levelLength = (int)profile.floorLength;
+        maxSideRooms = (int)profile.sideRoomCount;
 
         generatedFloor = pc.playerFloor;
 
@@ -401,6 +419,10 @@ public class WorldGeneration : MonoBehaviour
 
             GameObject teleporterRoom = Instantiate(teleporterRoomPrefab, teleporterRoomNode.transform);
 
+            float probability = Random.Range(0.0f, 100.0f);
+
+            teleporterRoom.GetComponentInChildren<Portal>().SetMaterialColour(probability);
+
             NodeController nc = teleporterRoomNode.GetComponent<NodeController>();
 
             if (sideRooms[i].toEast)
@@ -428,14 +450,14 @@ public class WorldGeneration : MonoBehaviour
             sideRooms[i].nodes.Add(teleporterDestinationRoomNode);
 
             // init teleporters
-            Teleporter trt = teleporterRoom.GetComponent<Teleporter>();
-            Teleporter tdrt = teleporterDestinationRoom.GetComponent<Teleporter>();
+            Teleporter mainPortal = teleporterRoom.GetComponent<Teleporter>();
+            Teleporter sidePortal = teleporterDestinationRoom.GetComponent<Teleporter>();
 
-            tdrt.sideRoom = true;
-            trt.destination = tdrt.portal.position;
-            tdrt.destination = trt.portal.position;
+            sidePortal.sideRoom = true;
+            mainPortal.destination = sidePortal.portal.position;
+            sidePortal.destination = mainPortal.portal.position;
 
-            pp.AddSideRoomToTotal();
+            profile.AddSideRoomToTotal();
         }
     }
 
