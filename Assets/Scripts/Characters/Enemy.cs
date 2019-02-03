@@ -19,6 +19,10 @@ public class Enemy : Actor
 
     private State state = State.IDLE;
 
+    private bool isABoss = false;
+    private float difficulty = 1.0f;
+    private int playersKilled = 0;
+
     public Transform healthBarPoint;
     private int healthBarNumber;
     public float viewRange = 10.0f;
@@ -123,11 +127,15 @@ public class Enemy : Actor
 
                         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
 
+                        GetComponent<Rigidbody>().mass = 1.0f;
+
                         GetComponent<CapsuleCollider>().material = physicsMaterial;
 
                         DropSword();
 
                         droppedSword = true;
+
+                        player.GetComponent<Profile>().KilledEnemy(new EnemyInfo(isABoss, difficulty, playersKilled));
                     }
 
                     break;
