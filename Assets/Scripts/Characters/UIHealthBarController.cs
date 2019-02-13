@@ -35,7 +35,5 @@ public class UIHealthBarController : MonoBehaviour
     {
         character = a;
         actorController = character.GetComponent<Actor>();
-
-        Debug.Log("Health Bar Assigned");
     }
 }

@@ -569,7 +569,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1842170148718966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalPosition: {x: 0, y: 1.2, z: 4.037}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 4244118076462626}
@@ -1308,7 +1308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   me: {fileID: 1842170148718966}
-  damage: 10
+  damage: 5
 --- !u!114 &114310188474790242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1322,7 +1322,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floorLength: 5
   sideRoomCount: 1
-  sideRoomCompleteProbability: 0
   enemyProbability: 20
   maxEnemiesOnFloor: 10
   maxEnemyCount: 1
@@ -1402,14 +1401,15 @@ MonoBehaviour:
   backwards: {fileID: 4855032785621260}
   walkingSpeed: 7
   runningSpeed: 14
+  playerRotateSpeed: 5
   maxStamina: 100
   stamina: 100
   staminaRate: 0.002
   staminaCooldown: 1
   minAngle: -90
   maxAngle: 90
-  horizontalSensitivity: 1
-  verticalSensitivity: 1
+  horizontalSensitivity: 5
+  verticalSensitivity: 5
 --- !u!136 &136649186183736886
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -8,7 +8,8 @@ public class ChestController : MonoBehaviour
     public Canvas hud;
     public ParticleSystem goodies;
 
-    public List<GameObject> coins;
+    [SerializeField]
+    private List<GameObject> coins;
     public float explosionForce = 0.0f;
     public Transform explosionPosition;
     public float explosionRadius = 0.0f;
@@ -39,8 +40,6 @@ public class ChestController : MonoBehaviour
             if (rigidbody.gameObject.tag == "Coin")
             {
                 coins.Add(rigidbody.gameObject);
-
-                Debug.Log("adding coin");
             }
         }
     }
@@ -101,8 +100,6 @@ public class ChestController : MonoBehaviour
             yield return new WaitForSeconds(explosionDelay);
 
             goodies.Play();
-
-            Debug.Log("Throw Coins");
 
             foreach (GameObject coin in coins)
             {
