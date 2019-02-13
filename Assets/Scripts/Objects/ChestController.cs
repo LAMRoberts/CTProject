@@ -8,10 +8,19 @@ public class ChestController : MonoBehaviour
     public Canvas hud;
     public ParticleSystem goodies;
 
+    [SerializeField]
+    private List<GameObject> coins;
+    public float explosionForce = 0.0f;
+    public Transform explosionPosition;
+    public float explosionRadius = 0.0f;
+    public float explosionLift = 0.0f;
+
     bool opened = false;
     bool particles = false;
 
-    public float speed;
+    public float explosionDelay = 0.0f;
+
+    public float openingSpeed;
 
     public Transform hinge;
     public Transform closed;
@@ -21,13 +30,25 @@ public class ChestController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         hud = player.GetComponent<Player>().hud;
+
+        coins = new List<GameObject>();
+
+        Rigidbody[] rb = GetComponentsInChildren<Rigidbody>();
+
+        foreach(Rigidbody rigidbody in rb)
+        {
+            if (rigidbody.gameObject.tag == "Coin")
+            {
+                coins.Add(rigidbody.gameObject);
+            }
+        }
     }
 
     private void Update()
     {
         if (opened)
         {
-            Vector3 newDir = Vector3.RotateTowards(hinge.forward, open.position - hinge.position, speed * Time.deltaTime, 0.0f);
+            Vector3 newDir = Vector3.RotateTowards(hinge.forward, open.position - hinge.position, openingSpeed * Time.deltaTime, 0.0f);
 
             hinge.rotation = Quaternion.LookRotation(newDir);
 
@@ -76,9 +97,14 @@ public class ChestController : MonoBehaviour
     {
         if (!particles)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(explosionDelay);
 
             goodies.Play();
+
+            foreach (GameObject coin in coins)
+            {
+                coin.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition.position, explosionRadius, explosionLift);
+            }
 
             particles = true;
         }

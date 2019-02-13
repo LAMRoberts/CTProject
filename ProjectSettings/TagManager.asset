@@ -8,6 +8,7 @@ TagManager:
   - WorldInfo
   - StartElevator
   - EndElevator
+  - Coin
   layers:
   - Default
   - TransparentFX

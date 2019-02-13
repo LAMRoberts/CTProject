@@ -26,8 +26,6 @@ public class Teleporter : MonoBehaviour
     {
         if (other.GetComponent<Actor>())
         {
-            Debug.Log("Actor Teleporting");
-
             Actor actor = other.GetComponent<Actor>();
 
             if (other.tag == "Player")

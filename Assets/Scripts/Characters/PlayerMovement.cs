@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     // stamina
     public float walkingSpeed = 10.0f;
     public float runningSpeed = 20.0f;
+    public float playerRotateSpeed = 5.0f;
     private float moveSpeed = 0.0f;
     public float maxStamina = 100.0f;
     public float stamina = 100.0f;
@@ -146,7 +147,21 @@ public class PlayerMovement : MonoBehaviour
 
     void MoveCamera()
     {
-        yaw += horizontalSensitivity * Input.GetAxis("Mouse X");
+        // rotation with q and e (keyboard only)
+        if (Input.GetKey("q"))
+        {
+            yaw -= playerRotateSpeed;
+        }
+        else if (Input.GetKey("e"))
+        {
+            yaw += playerRotateSpeed;
+        }
+        else
+        {
+            yaw += horizontalSensitivity * Input.GetAxis("Mouse X");
+        }
+
+
         pitch = Mathf.Clamp(pitch - (verticalSensitivity * Input.GetAxis("Mouse Y")), minAngle, maxAngle);
 
         transform.eulerAngles = new Vector3(0.0f, yaw, 0.0f);
