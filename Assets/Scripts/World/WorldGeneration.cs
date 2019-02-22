@@ -19,13 +19,15 @@ public struct SideRoomInfo
     public GameObject worldNode;
     public bool toEast;
     public List<GameObject> nodes;
+    public float chestProbability;
 
     // constructor
-    public SideRoomInfo(GameObject wNode, bool eastward)
+    public SideRoomInfo(GameObject wNode, bool eastward, float chest)
     {
         worldNode = wNode;
         toEast = eastward;
         nodes = new List<GameObject>();
+        chestProbability = chest;
     }
 }
 
@@ -34,15 +36,13 @@ public struct PortalInfo
 {
     public GameObject mainPortal;
     public GameObject sidePortal;
-    public float probability;
     public GameObject chest;
 
     // constructor
-    public PortalInfo(GameObject main, GameObject side, float chestChance, GameObject chestObj)
+    public PortalInfo(GameObject main, GameObject side, GameObject chestObj)
     {
         mainPortal = main;
         sidePortal = side;
-        probability = chestChance;
         chest = chestObj;
     }
 }
@@ -59,6 +59,7 @@ public class WorldGeneration : MonoBehaviour
     private List<GameObject> worldNodes;
     private List<SideRoomInfo> potentialSideRooms;
     private List<SideRoomInfo> sideRooms;
+    private List<PortalInfo> portals;
               
     public GameObject worldNodePrefab;
     public GameObject roomPrefab;
@@ -376,17 +377,19 @@ public class WorldGeneration : MonoBehaviour
         {
             NodeController nc = worldNode.GetComponent<NodeController>();
 
+            float randomChestChance = Random.Range(0.0f, 100.0f);
+
             // if theres no room to the east
             if (!nc.east)
             {
-                SideRoomInfo sideRoomInfo = new SideRoomInfo(worldNode, true);
+                SideRoomInfo sideRoomInfo = new SideRoomInfo(worldNode, true, randomChestChance);
 
                 potentialSideRooms.Add(sideRoomInfo);
             }
             // if theres no room to the west
             if (!nc.west)
             {
-                SideRoomInfo sideRoomInfo = new SideRoomInfo(worldNode, false);
+                SideRoomInfo sideRoomInfo = new SideRoomInfo(worldNode, false, randomChestChance);
 
                 potentialSideRooms.Add(sideRoomInfo);                
             }
@@ -485,7 +488,12 @@ public class WorldGeneration : MonoBehaviour
 
                 if (i == sideRoomLength - 1)
                 {
-                    Instantiate(chestPrefab, nextRoomNode.transform);
+                    float chestRNG = Random.Range(0.0f, 100.0f);
+
+                    if (chestRNG >= sideRoom.chestProbability)
+                    {
+                        Instantiate(chestPrefab, nextRoomNode.transform);
+                    }
                 }
             }
         }
