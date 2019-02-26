@@ -493,6 +493,12 @@ public class WorldGeneration : MonoBehaviour
                     if (chestRNG >= sideRoom.chestProbability)
                     {
                         Instantiate(chestPrefab, nextRoomNode.transform);
+
+                        Debug.Log("Spawning Chest: " + chestRNG);
+                    }
+                    else
+                    {
+                        Debug.Log("Not Spawning Chest: " + chestRNG);
                     }
                 }
             }
