@@ -179,53 +179,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 4.1850004, y: -33.111, z: 34.960003}
---- !u!1001 &1311774914
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 1.78
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175253531319406, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 23180127079061918, guid: 3658152d9f981b84ea76a7db08159952,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: b7f70d23ebeb07948a56eb18dfd48cfb, type: 2}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3658152d9f981b84ea76a7db08159952, type: 2}
-  m_IsPrefabAsset: 0
 --- !u!1 &1339515445
 GameObject:
   m_ObjectHideFlags: 0

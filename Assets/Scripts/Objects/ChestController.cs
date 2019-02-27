@@ -6,7 +6,7 @@ public class ChestController : MonoBehaviour
 {
     public GameObject player;
     public Canvas hud;
-    public ParticleSystem goodies;
+    public ParticleSystem chestParticles;
 
     [SerializeField]
     private List<GameObject> coins;
@@ -65,7 +65,10 @@ public class ChestController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player" && !opened)
         {
-            hud.GetComponent<HUDController>().Activate(true);
+            if (hud != null)
+            {
+                hud.GetComponent<HUDController>().Activate(true);
+            }
         }
     }
 
@@ -79,7 +82,10 @@ public class ChestController : MonoBehaviour
                 {
                     opened = true;
 
-                    hud.GetComponent<HUDController>().Activate(false);
+                    if (hud != null)
+                    {
+                        hud.GetComponent<HUDController>().Activate(false);
+                    }
                 }
             }
         }
@@ -89,7 +95,10 @@ public class ChestController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player" && !opened)
         {
-            hud.GetComponent<HUDController>().Activate(false);
+            if (hud != null)
+            {
+                hud.GetComponent<HUDController>().Activate(false);
+            }
         }
     }
 
@@ -99,11 +108,10 @@ public class ChestController : MonoBehaviour
         {
             yield return new WaitForSeconds(explosionDelay);
 
-            goodies.Play();
-
             foreach (GameObject coin in coins)
             {
                 coin.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition.position, explosionRadius, explosionLift);
+                Debug.Log("Boom");
             }
 
             particles = true;

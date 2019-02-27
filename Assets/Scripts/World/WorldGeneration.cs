@@ -102,16 +102,6 @@ public class WorldGeneration : MonoBehaviour
 
         GenerateWorld();
 	}
-
-    void Update()
-    {
-        if (Input.GetKeyDown("m"))
-        {
-            DestroyWorld();
-
-            GenerateWorld();
-        }
-    }
     
     // remove all room gameobjects
     void DestroyWorld()
@@ -147,7 +137,6 @@ public class WorldGeneration : MonoBehaviour
         FillSideRooms();
 
         // find potential wall positions in side rooms
-
         FindSideRoomWallPositions();
                
         // populate rooms with walls
@@ -231,7 +220,7 @@ public class WorldGeneration : MonoBehaviour
     void FillNodes()
     {
         int roomNumber = 1;
-
+        
         foreach (GameObject node in worldNodes)
         {
             NodeController nc = node.GetComponent<NodeController>();
@@ -464,6 +453,19 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
+    private void PlaceEnemies()
+    {
+
+
+
+
+        // side rooms
+        foreach (SideRoomInfo sideRoom in sideRooms)
+        {
+
+        }
+    }
+
     private void FillSideRooms()
     {
         foreach (SideRoomInfo sideRoom in sideRooms)
@@ -490,8 +492,7 @@ public class WorldGeneration : MonoBehaviour
                 {
                     float chestRNG = Random.Range(0.0f, 100.0f);
 
-                    if (true)
-                    //if (chestRNG >= sideRoom.chestProbability)
+                    if (chestRNG >= sideRoom.chestProbability)
                     {
                         Instantiate(chestPrefab, nextRoomNode.transform);
 
