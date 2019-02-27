@@ -102,16 +102,6 @@ public class WorldGeneration : MonoBehaviour
 
         GenerateWorld();
 	}
-
-    void Update()
-    {
-        if (Input.GetKeyDown("m"))
-        {
-            DestroyWorld();
-
-            GenerateWorld();
-        }
-    }
     
     // remove all room gameobjects
     void DestroyWorld()
@@ -147,7 +137,6 @@ public class WorldGeneration : MonoBehaviour
         FillSideRooms();
 
         // find potential wall positions in side rooms
-
         FindSideRoomWallPositions();
                
         // populate rooms with walls
@@ -231,7 +220,7 @@ public class WorldGeneration : MonoBehaviour
     void FillNodes()
     {
         int roomNumber = 1;
-
+        
         foreach (GameObject node in worldNodes)
         {
             NodeController nc = node.GetComponent<NodeController>();
@@ -461,6 +450,19 @@ public class WorldGeneration : MonoBehaviour
             sidePortal.destination = mainPortal.portal.position;
 
             profile.AddSideRoomToTotal();
+        }
+    }
+
+    private void PlaceEnemies()
+    {
+
+
+
+
+        // side rooms
+        foreach (SideRoomInfo sideRoom in sideRooms)
+        {
+
         }
     }
 
