@@ -490,7 +490,8 @@ public class WorldGeneration : MonoBehaviour
                 {
                     float chestRNG = Random.Range(0.0f, 100.0f);
 
-                    if (chestRNG >= sideRoom.chestProbability)
+                    if (true)
+                    //if (chestRNG >= sideRoom.chestProbability)
                     {
                         Instantiate(chestPrefab, nextRoomNode.transform);
 

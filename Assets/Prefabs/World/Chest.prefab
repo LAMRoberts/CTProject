@@ -10845,7 +10845,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: b7f70d23ebeb07948a56eb18dfd48cfb, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21727,7 +21727,7 @@ MonoBehaviour:
   explosionForce: 50
   explosionPosition: {fileID: 4436659669713120}
   explosionRadius: 5
-  explosionLift: 0
+  explosionLift: 1
   explosionDelay: 0.25
   openingSpeed: 5
   hinge: {fileID: 4998591797289900}
