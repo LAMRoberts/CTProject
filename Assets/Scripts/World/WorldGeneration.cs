@@ -69,6 +69,7 @@ public class WorldGeneration : MonoBehaviour
     public GameObject teleporterRoomPrefab;
     public GameObject wallPrefab;
     public GameObject chestPrefab;
+    public GameObject enemyPrefab;
     
     private GameObject player;
     private Player pc;
@@ -76,7 +77,6 @@ public class WorldGeneration : MonoBehaviour
 
     private GameObject startElevatorRoom;
     public GameObject startElevator;
-
     private GameObject bossRoom;
     public GameObject endElevator;
 
@@ -90,6 +90,7 @@ public class WorldGeneration : MonoBehaviour
         worldInfo = GameObject.FindGameObjectWithTag("WorldInfo");
 
         profile.SetExplorer();
+        profile.SetKiller();
 
         levelLength = (int)profile.floorLength;
         maxSideRooms = (int)profile.sideRoomCount;
@@ -132,6 +133,9 @@ public class WorldGeneration : MonoBehaviour
 
         // find potential side rooms and generate them
         GenerateSideRooms();
+
+        // place enemies in rooms
+        PlaceEnemies();
 
         // fill side rooms
         FillSideRooms();
@@ -394,9 +398,9 @@ public class WorldGeneration : MonoBehaviour
         int sideRoomSpacing = potentialSideRooms.Count / maxSideRooms;
 
         // find next floor room to place a side room in
-        for (int index = 0; index < maxSideRooms; index++)
+        for (int sideRoomIndex = 0; sideRoomIndex < maxSideRooms; sideRoomIndex++)
         {
-            int rng = Random.Range((index * sideRoomSpacing), ((index + 1) * sideRoomSpacing));
+            int rng = Random.Range((sideRoomIndex * sideRoomSpacing), ((sideRoomIndex + 1) * sideRoomSpacing));
 
             // add room to side rooms list
             sideRooms.Add(potentialSideRooms[rng]);            
@@ -455,15 +459,27 @@ public class WorldGeneration : MonoBehaviour
 
     private void PlaceEnemies()
     {
+        int numberOfEnemiesToSpawn = (int)((worldNodes.Count) * (profile.enemyProbability / 100.0f));
 
-
-
-
-        // side rooms
-        foreach (SideRoomInfo sideRoom in sideRooms)
+        if (numberOfEnemiesToSpawn < 1)
         {
-
+            numberOfEnemiesToSpawn = 1;
         }
+
+        float gapBetweenEnemies = (worldNodes.Count) / numberOfEnemiesToSpawn;
+
+        int enemiesSpawned = 0;
+
+        for (int enemyIndex = 0; enemyIndex < numberOfEnemiesToSpawn; enemyIndex++)
+        {
+            int roomToSpawnIn = (int)(Random.Range(enemyIndex * gapBetweenEnemies, (enemyIndex + 1.0f) * gapBetweenEnemies) + 1);
+
+            GameObject enemy = Instantiate(enemyPrefab, worldNodes[roomToSpawnIn].transform);
+
+            enemiesSpawned++;
+        }
+
+        profile.AddEnemiesToTotal(enemiesSpawned);
     }
 
     private void FillSideRooms()
@@ -495,12 +511,6 @@ public class WorldGeneration : MonoBehaviour
                     if (chestRNG >= sideRoom.chestProbability)
                     {
                         Instantiate(chestPrefab, nextRoomNode.transform);
-
-                        Debug.Log("Spawning Chest: " + chestRNG);
-                    }
-                    else
-                    {
-                        Debug.Log("Not Spawning Chest: " + chestRNG);
                     }
                 }
             }
