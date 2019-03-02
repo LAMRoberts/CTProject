@@ -19,8 +19,8 @@ public struct EnemyInfo
 public class Profile : MonoBehaviour
 {
     // player archetypes
-    //private float explorer = 0.0f;
-    //private float killer = 0.0f;
+    private float explorer = 0.0f;
+    private float killer = 0.0f;
     //private float achiever = 0.0f;
     //private float socialiser = 0.0f;
 
@@ -111,6 +111,8 @@ public class Profile : MonoBehaviour
 
     public void SetExplorer()
     {
+        #region Total Side Rooms Complete
+
         if (sideRoomCompleteProbability > 75.0f)
         {
             floorLength = floorLength + 5;
@@ -123,12 +125,12 @@ public class Profile : MonoBehaviour
 
             sideRoomCount = sideRoomCount + 1;
         }
-        //else if (sideRoomCompleteProbability < 50.0f && sideRoomCompleteProbability > 25.0f)
-        //{
-        //    floorLength = floorLength * 1.1f;
+        else if (sideRoomCompleteProbability < 50.0f && sideRoomCompleteProbability > 25.0f)
+        {
+            floorLength = floorLength * 1.1f;
 
-        //    sideRoomCount = sideRoomCount * 1.1f;
-        //}
+            sideRoomCount = sideRoomCount * 1.1f;
+        }
         else
         {
             if (floorLength > 8.0f)
@@ -141,6 +143,8 @@ public class Profile : MonoBehaviour
                 sideRoomCount = sideRoomCount * 0.8f;
             }
         }
+
+        #endregion
     }
 
     #endregion
@@ -180,6 +184,20 @@ public class Profile : MonoBehaviour
     private void RecalculateEnemyKillProbability()
     {
         sideRoomCompleteProbability = (sideRoomsComplete / totalSideRooms) * 100.0f;
+    }
+
+    public void SetKiller()
+    {
+        #region Total Enemies Killed
+
+        if (Mathf.Abs(enemyKillProbability - enemyProbability) > 5.0f && (enemyProbability > 20.0f && enemyProbability < 70.0f))
+        {
+            float difference = (enemyKillProbability - enemyProbability) * 0.5f;
+
+            enemyProbability += difference;
+        }
+
+        #endregion
     }
 
     #endregion

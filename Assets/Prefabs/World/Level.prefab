@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generatedFloor: 1
-  levelLength: 10
+  levelLength: 100
   maxSideRooms: 1
   sideRoomLength: 3
   worldNodePrefab: {fileID: 1824640752257954, guid: d6f28d5c619870b42abcd3a4a6ea818b,
@@ -68,6 +68,8 @@ MonoBehaviour:
     type: 2}
   wallPrefab: {fileID: 1191685098451246, guid: 908355484a27c714794e5042771b7d78, type: 2}
   chestPrefab: {fileID: 1049603875013198, guid: 3658152d9f981b84ea76a7db08159952,
+    type: 2}
+  enemyPrefab: {fileID: 1433530488579770, guid: b97d74f3455f81d4498d5c483bcbd82f,
     type: 2}
   startElevator: {fileID: 0}
   endElevator: {fileID: 0}
