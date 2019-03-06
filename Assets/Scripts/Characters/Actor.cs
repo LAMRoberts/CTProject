@@ -36,7 +36,7 @@ public class Actor : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("Ouch, What the fuck is wrong with you? Health: " + health);
+        Debug.Log("Ouch. Health: " + health);
 
         float dmg = damage - (damage * damageResistance);
 
@@ -55,8 +55,6 @@ public class Actor : MonoBehaviour
     protected virtual void Murder()
     {
         dead = true;
-
-        Debug.Log("DED");
     }
 
     public void SetSideRoom(bool sr)

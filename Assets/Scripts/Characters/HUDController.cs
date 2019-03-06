@@ -40,7 +40,7 @@ public class HUDController : MonoBehaviour
     }
 
     private void Update()
-    {
+    {         
         foreach (EnemyUI enemyUI in enemyUIs)
         {
             RaycastHit hit;
@@ -48,30 +48,35 @@ public class HUDController : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag == "Player")
                 {
-                    Debug.DrawRay(enemyUI.enemy.transform.position, (player.transform.position - enemyUI.enemy.transform.position) * hit.distance, Color.green);
+                    //Debug.DrawRay(enemyUI.enemy.transform.position, (player.transform.position - enemyUI.enemy.transform.position) * hit.distance, Color.green);
 
-                    if (!enemyUI.healthBar.gameObject.activeSelf)
+                    Vector3 dirToEnemy = enemyUI.enemy.transform.position - player.transform.position;
+                    float dot = Vector3.Dot(dirToEnemy, player.transform.forward);
+
+                    if (dot > 0.0f)
                     {
-                        enemyUI.healthBar.gameObject.SetActive(true);
-                    }
+                        if (!enemyUI.healthBar.gameObject.activeSelf)
+                        {
+                            enemyUI.healthBar.gameObject.SetActive(true);
+                        }
 
-                    Vector3 pos = cam.WorldToScreenPoint(enemyUI.enemy.GetComponent<Enemy>().healthBarPoint.position);
-                    enemyUI.healthBar.position = pos;
+                        Vector3 pos = cam.WorldToScreenPoint(enemyUI.enemy.GetComponent<Enemy>().healthBarPoint.position);
+                        enemyUI.healthBar.position = pos;
+                    }
+                    else
+                    {
+                        enemyUI.healthBar.gameObject.SetActive(false);
+                    }
                 }
                 else
                 {
-                    Debug.DrawRay(enemyUI.enemy.transform.position, (player.transform.position - enemyUI.enemy.transform.position) * hit.distance, Color.red);
+                    //Debug.DrawRay(enemyUI.enemy.transform.position, (player.transform.position - enemyUI.enemy.transform.position) * hit.distance, Color.red);
 
                     if (enemyUI.healthBar.gameObject.activeSelf)
                     {
                         enemyUI.healthBar.gameObject.SetActive(false);
                     }
                 }
-            }
-            else
-            {
-                Debug.DrawRay(enemyUI.enemy.transform.position, (player.transform.position - enemyUI.enemy.transform.position) * hit.distance, Color.blue);
-
             }
         }
     }

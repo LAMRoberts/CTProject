@@ -476,6 +476,8 @@ public class WorldGeneration : MonoBehaviour
 
             GameObject enemy = Instantiate(enemyPrefab, worldNodes[roomToSpawnIn].transform);
 
+            enemy.transform.position = worldNodes[roomToSpawnIn].transform.position;
+
             enemiesSpawned++;
         }
 
