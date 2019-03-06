@@ -8,6 +8,8 @@ public class Player : Actor
     public float attackChargeRate = 0.5f;
 
     private float attackPower = 0.0f;
+    private float damageMultiplier = 5.0f;
+    private float currentDamage = 0.0f;
     public float staminaCostMultiplier = 0.2f;
     private bool attacking = false;
     private bool charging = false;
@@ -71,6 +73,10 @@ public class Player : Actor
         {
             charging = false;
 
+            // set damage
+
+
+            // stamina consumption
             if (attackPower != 0.0f)
             {
                 if (shouldConsumeStamina)
@@ -103,7 +109,7 @@ public class Player : Actor
 
         sc.UpdateColour(attackPower / 100);
 
-        sc.gameObject.GetComponentInChildren<Sword>().UpdateDamage(100.0f + attackPower);
+        sc.gameObject.GetComponentInChildren<Sword>().UpdateDamage(attackPower);
 
         attacking = sc.UpdateSword(attacking, charging);
     }

@@ -388,7 +388,7 @@ Prefab:
     - target: {fileID: 114310188474790242, guid: 046e6a748a019d2439c98d7db2b8939e,
         type: 2}
       propertyPath: floorLength
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114310188474790242, guid: 046e6a748a019d2439c98d7db2b8939e,
         type: 2}
