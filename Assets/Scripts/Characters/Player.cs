@@ -54,12 +54,14 @@ public class Player : Actor
 
             if (charging)
             {
-                if (attackPower <= maxAttackPower)
+                // add attack power
+                if (attackPower < maxAttackPower)
                 {
                     attackPower += attackChargeRate;
                 }
 
-                if (attackPower > (maxAttackPower * 0.5f))
+                // consume stamina
+                if (attackPower != 0.0f)
                 {
                     shouldConsumeStamina = true;
                 }
@@ -75,7 +77,14 @@ public class Player : Actor
                 {
                     shouldConsumeStamina = false;
 
-                    GetComponent<PlayerMovement>().ConsumeStamina((attackPower * 0.2f) * staminaCostMultiplier);
+                    if (attackPower < 20.0f)
+                    {
+                        GetComponent<PlayerMovement>().ConsumeStamina((4.0f) * staminaCostMultiplier);
+                    }
+                    else
+                    {
+                        GetComponent<PlayerMovement>().ConsumeStamina((attackPower * 0.2f) * staminaCostMultiplier);
+                    }
                 }
 
                 if (!attacking)
@@ -93,6 +102,8 @@ public class Player : Actor
         SwordController sc = gameObject.GetComponentInChildren<SwordController>();
 
         sc.UpdateColour(attackPower / 100);
+
+        sc.gameObject.GetComponentInChildren<Sword>().UpdateDamage(100.0f + attackPower);
 
         attacking = sc.UpdateSword(attacking, charging);
     }
