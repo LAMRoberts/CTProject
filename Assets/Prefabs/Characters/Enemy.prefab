@@ -1107,8 +1107,8 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1282998594382134}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 12, z: 0.7}
   m_Center: {x: 0, y: -0.4, z: 0.01}
@@ -1142,13 +1142,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  damageResistance: 0
+  damageResistance: 0.2
   stamina: 0
   inSideRoom: 0
   healthBarPoint: {fileID: 4007087565604842}
   viewRange: 20
   combatRange: 10
-  personalSpace: 4
+  personalSpace: 2
   speed: 10
   walkingSpeed: 2
   runningSpeed: 8
@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   me: {fileID: 1433530488579770}
-  damage: 10
+  ready: 0
 --- !u!136 &136079686518827926
 CapsuleCollider:
   m_ObjectHideFlags: 1

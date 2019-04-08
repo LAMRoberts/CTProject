@@ -8,7 +8,7 @@ public class Sword : MonoBehaviour
 
     public bool ready = false;
 
-    public const float damage = 25.0f;
+    public const float damage = 10.0f;
 
     private float currentDamage;
 
@@ -23,7 +23,9 @@ public class Sword : MonoBehaviour
 
     public void UpdateDamage(float dmg)
     {
-        currentDamage = dmg;
+        currentDamage = (damage * (1 + (dmg / 100)));
+
+        //Debug.Log("Damage Updated to " + currentDamage);
     }
 
     public float GetDamage()
@@ -34,6 +36,8 @@ public class Sword : MonoBehaviour
     public void ResetDamage()
     {
         currentDamage = damage;
+
+        //Debug.Log("Damage Reset to " + currentDamage);
     }
 
     private void OnTriggerEnter(Collider other)
