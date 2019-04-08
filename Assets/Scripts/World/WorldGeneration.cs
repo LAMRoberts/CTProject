@@ -291,6 +291,8 @@ public class WorldGeneration : MonoBehaviour
         if (worldInfo.GetComponent<WorldInfo>().GetLowestFloor() != 1)
         {
             player.transform.position = new Vector3(startElevator.transform.position.x + pc.positionDifference.x, startElevator.transform.position.y + 2, startElevator.transform.position.z + pc.positionDifference.z);
+
+            player.GetComponent<Player>().startPosition = player.transform.position;
         }
     }
     

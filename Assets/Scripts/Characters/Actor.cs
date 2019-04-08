@@ -59,6 +59,13 @@ public class Actor : MonoBehaviour
         dead = true;
     }
 
+    public void Revive()
+    {
+        health = 100;
+
+        dead = false;
+    }
+
     public void SetSideRoom(bool sr)
     {
         inSideRoom = sr;

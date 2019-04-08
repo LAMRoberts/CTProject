@@ -20,15 +20,21 @@ public class Player : Actor
 
     public Elevator inElevator = Elevator.NONE;
 
+    public Vector3 startPosition;
+
     public Vector3 positionDifference;
 
     public int playerFloor = 1;
+
+    private Camera deathCam;
 
     private void Start()
     {
         hud = Instantiate(hudPrefab);
 
         positionDifference = new Vector3(0, 0, 0);
+
+        deathCam = GameObject.FindGameObjectWithTag("DeathCam").GetComponent<Camera>();
     }
 
     private void LateUpdate()
@@ -41,6 +47,14 @@ public class Player : Actor
             }
 
             Attack();
+        }
+        else
+        {
+            transform.position = Vector3.zero;
+
+            StartCoroutine(_Revive);
+
+            Revive();
         }
     }
 
@@ -122,5 +136,14 @@ public class Player : Actor
     public void SetLevel(int floorNumber)
     {
         playerFloor = floorNumber;
+    }
+
+    IEnumerator _Revive()
+    {
+
+
+        yield return new WaitForSeconds(3.0f);
+
+        Revive();
     }
 }
