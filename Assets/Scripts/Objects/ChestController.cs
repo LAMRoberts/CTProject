@@ -76,15 +76,33 @@ public class ChestController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (Input.GetKeyDown("e"))
+            if (other.GetComponent<PlayerMovement>().usingController)
             {
-                if (!opened)
+                if (Input.GetButtonDown("X Button"))
                 {
-                    opened = true;
-
-                    if (hud != null)
+                    if (!opened)
                     {
-                        hud.GetComponent<HUDController>().Activate(false);
+                        opened = true;
+
+                        if (hud != null)
+                        {
+                            hud.GetComponent<HUDController>().Activate(false);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKeyDown("e"))
+                {
+                    if (!opened)
+                    {
+                        opened = true;
+
+                        if (hud != null)
+                        {
+                            hud.GetComponent<HUDController>().Activate(false);
+                        }
                     }
                 }
             }
@@ -111,7 +129,7 @@ public class ChestController : MonoBehaviour
             foreach (GameObject coin in coins)
             {
                 coin.GetComponent<Rigidbody>().AddExplosionForce(explosionForce, explosionPosition.position, explosionRadius, explosionLift);
-                Debug.Log("Boom");
+                //Debug.Log("Boom");
             }
 
             particles = true;

@@ -32,9 +32,22 @@ public class ElevatorPanelController : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (Input.GetKeyDown("e") && pc.inElevator == ec.whichOne)
+            if (pc.inElevator == ec.whichOne)
             {
-                ec.ChangeFloors();
+                if (other.gameObject.GetComponent<PlayerMovement>().usingController)
+                {
+                    if (Input.GetButtonDown("X Button"))
+                    {
+                        ec.ChangeFloors();
+                    }
+                }
+                else
+                {
+                    if (Input.GetKeyDown("e"))
+                    {
+                        ec.ChangeFloors();
+                    }
+                }
             }
         }
     }

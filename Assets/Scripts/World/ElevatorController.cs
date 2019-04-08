@@ -149,7 +149,7 @@ public class ElevatorController : MonoBehaviour
     {
         if (whichOne == Elevator.NEXT)
         {
-            Debug.Log("Elevator is at floor: " + elevatorFloor + ", Going Down");
+            //Debug.Log("Elevator is at floor: " + elevatorFloor + ", Going Down");
 
             player.GetComponent<Player>().SetLevel(elevatorFloor + 1);
 

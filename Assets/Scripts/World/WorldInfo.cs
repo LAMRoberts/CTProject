@@ -34,7 +34,7 @@ public class WorldInfo : MonoBehaviour
 
             levels.Add(level);
 
-            Debug.Log("Lowest Floor: " + levels.Count);
+            //Debug.Log("Lowest Floor: " + levels.Count);
         }
     }
 

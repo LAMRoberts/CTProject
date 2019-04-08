@@ -19,8 +19,10 @@ public struct EnemyInfo
 public class Profile : MonoBehaviour
 {
     // player archetypes
+    [SerializeField]
     private float explorer = 0.0f;
-    private float killer = 0.0f;
+    [SerializeField]
+    private float killer = 0.0f;    
     //private float achiever = 0.0f;
     //private float socialiser = 0.0f;
 

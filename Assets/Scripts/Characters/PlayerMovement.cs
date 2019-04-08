@@ -88,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         sprinting = !sprinting;
 
-                        Debug.Log("Sprinting = " + sprinting);
+                        //Debug.Log("Sprinting = " + sprinting);
                     }
                 }
             }
