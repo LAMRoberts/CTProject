@@ -46,6 +46,8 @@ public class SwordController : MonoBehaviour
     {
         tr.Trail(false);
 
+        Sword s = GetComponentInChildren<Sword>();
+
         switch (state)
         {
             case SwordState.idle:
@@ -75,6 +77,9 @@ public class SwordController : MonoBehaviour
                 }
             case SwordState.attacking:
                 {
+                    s.ResetAttack();
+                    s.ready = true;
+
                     transform.position = Vector3.MoveTowards(transform.position, swordEndTransform.position, attackingStep);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, swordEndTransform.rotation, attackingStep * attackingRotation);
 
@@ -89,6 +94,8 @@ public class SwordController : MonoBehaviour
                 }
             case SwordState.resetting:
                 {
+                    s.ready = false;
+
                     transform.position = Vector3.MoveTowards(transform.position, swordIdleTransform.position, resettingStep);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, swordIdleTransform.rotation, resettingStep * resettingRotation);
 

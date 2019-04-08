@@ -383,7 +383,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1842170148718966, guid: 046e6a748a019d2439c98d7db2b8939e, type: 2}
       propertyPath: m_Name
-      value: Nathan
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 114310188474790242, guid: 046e6a748a019d2439c98d7db2b8939e,
         type: 2}
@@ -409,6 +409,11 @@ Prefab:
         type: 2}
       propertyPath: staminaRate
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114722786644491070, guid: 046e6a748a019d2439c98d7db2b8939e,
+        type: 2}
+      propertyPath: attackChargeRate
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 046e6a748a019d2439c98d7db2b8939e, type: 2}

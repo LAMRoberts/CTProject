@@ -27,7 +27,7 @@ public class Enemy : Actor
     private int healthBarNumber;
     public float viewRange = 10.0f;
     public float combatRange = 10.0f;
-    public float personalSpace = 4.0f;
+    public float personalSpace = 2.0f;
 
     public float speed = 10.0f;
     public float walkingSpeed = 10.0f;

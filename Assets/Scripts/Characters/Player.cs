@@ -46,7 +46,10 @@ public class Player : Actor
 
     private void Attack()
     {
-        if (Input.GetMouseButton(0))
+        bool usingController = GetComponent<PlayerMovement>().usingController;
+
+        if (!usingController && (Input.GetMouseButton(0)) || 
+            usingController && Input.GetAxis("Right Trigger") != 0.0f)
         {
             if (!attacking)
             {
@@ -59,7 +62,7 @@ public class Player : Actor
                 // add attack power
                 if (attackPower < maxAttackPower)
                 {
-                    attackPower += attackChargeRate;
+                    attackPower += Time.deltaTime * attackChargeRate; 
                 }
 
                 // consume stamina
@@ -72,9 +75,6 @@ public class Player : Actor
         else
         {
             charging = false;
-
-            // set damage
-
 
             // stamina consumption
             if (attackPower != 0.0f)

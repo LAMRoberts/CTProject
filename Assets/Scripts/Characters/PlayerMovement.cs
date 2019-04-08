@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public bool usingController = true;
+    public bool usingMouse = false;
+
     // movement
     private Rigidbody rb;
     public Transform forwards;
@@ -13,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
 
     // stamina
+    private bool sprinting = false;
     public float walkingSpeed = 10.0f;
     public float runningSpeed = 20.0f;
     public float playerRotateSpeed = 5.0f;
@@ -35,6 +39,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Start ()
     {
+        if (usingController && usingMouse)
+        {
+            usingMouse = false;
+        }
+
         rb = GetComponent<Rigidbody>();
 
         playerCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -66,8 +75,55 @@ public class PlayerMovement : MonoBehaviour
 
     void Stamina()
     {
-        // if running
-        if (Input.GetKey("left shift") && Input.GetKey("w") && stamina > staminaRate)
+        if (usingController)
+        {
+            // if running
+            if (Input.GetAxis("Move Vertical Controller") < -0.5f)
+            {
+                //Debug.Log("Running Speed");
+
+                if (Input.GetButtonDown("Left Stick Click"))
+                {
+                    if (stamina > staminaRate)
+                    {
+                        sprinting = !sprinting;
+
+                        Debug.Log("Sprinting = " + sprinting);
+                    }
+                }
+            }
+            else if (sprinting)
+            {
+                sprinting = false;
+            }
+        }
+        else
+        {
+            // if running
+            if (Input.GetKey("left shift") && Input.GetKey("w"))
+            {
+                if (stamina > staminaRate)
+                {
+                    if (!sprinting)
+                    {
+                        sprinting = true;
+
+                        Debug.Log("Sprinting = " + sprinting);
+                    }
+                }
+            }
+            else
+            {
+                if (sprinting)
+                {
+                    sprinting = false;
+
+                    Debug.Log("Sprinting = " + sprinting);
+                }
+            }
+        }
+
+        if (sprinting)
         {
             moveSpeed = runningSpeed;
             staminaUsed = staminaRate;
@@ -118,28 +174,53 @@ public class PlayerMovement : MonoBehaviour
     {
         velocity = new Vector3(0, rb.velocity.y, 0);
 
-        // if moving forward
-        if (Input.GetKey("w"))
+        if (usingController)
         {
-            velocity += new Vector3(transform.forward.x * moveSpeed, 0, transform.forward.z * moveSpeed);
-        }
+            if (Input.GetAxis("Move Vertical Controller") != 0.0f)
+            {
+                float speed = Input.GetAxis("Move Vertical Controller");
 
-        // if moving backwards
-        if (Input.GetKey("s"))
-        {
-            velocity += new Vector3(-(transform.forward.x) * moveSpeed, 0, -(transform.forward.z) * moveSpeed);
-        }
+                velocity -= new Vector3(transform.forward.x * (moveSpeed * speed), 0, transform.forward.z * (moveSpeed * speed));
 
-        // if moving left
-        if (Input.GetKey("a"))
-        {
-            velocity += new Vector3(-(transform.right.x) * moveSpeed, 0, -(transform.right.z * moveSpeed));
-        }
+                //Debug.Log("Vertical: " + Input.GetAxis("Move Vertical Controller"));
+            }
 
-        // if moving right
-        if (Input.GetKey("d"))
+            if (Input.GetAxis("Move Horizontal Controller") != 0.0f)
+            {
+                float speed = Input.GetAxis("Move Horizontal Controller");
+
+                velocity += new Vector3(transform.right.x * (moveSpeed * speed), 0, transform.right.z * (moveSpeed * speed));
+
+                //Debug.Log("Horizontal: " + Input.GetAxis("Move Horizontal Controller"));
+            }
+        }
+        else
         {
-            velocity += new Vector3(transform.right.x * moveSpeed, 0, transform.right.z * moveSpeed);
+            // if moving forward
+            if (Input.GetKey("w"))
+            {
+                velocity += new Vector3(transform.forward.x * moveSpeed, 0, transform.forward.z * moveSpeed);
+
+                Debug.Log("w" + velocity);
+            }
+
+            // if moving backwards
+            if (Input.GetKey("s"))
+            {
+                velocity += new Vector3(-(transform.forward.x) * moveSpeed, 0, -(transform.forward.z) * moveSpeed);
+            }
+
+            // if moving left
+            if (Input.GetKey("a"))
+            {
+                velocity += new Vector3(-(transform.right.x) * moveSpeed, 0, -(transform.right.z * moveSpeed));
+            }
+
+            // if moving right
+            if (Input.GetKey("d"))
+            {
+                velocity += new Vector3(transform.right.x * moveSpeed, 0, transform.right.z * moveSpeed);
+            }
         }
 
         rb.velocity = velocity;
@@ -147,22 +228,30 @@ public class PlayerMovement : MonoBehaviour
 
     void MoveCamera()
     {
-        // rotation with q and e (keyboard only)
-        if (Input.GetKey("q"))
+        if (usingController)
         {
-            yaw -= playerRotateSpeed;
-        }
-        else if (Input.GetKey("e"))
-        {
-            yaw += playerRotateSpeed;
+            yaw += horizontalSensitivity * Input.GetAxis("Look Horizontal");
+
+            pitch = Mathf.Clamp(pitch - (verticalSensitivity * (-Input.GetAxis("Look Vertical"))), minAngle, maxAngle);
         }
         else
-        {
-            yaw += horizontalSensitivity * Input.GetAxis("Mouse X");
+        {        
+            // rotation with q and e (keyboard only)
+            if (Input.GetKey("q"))
+            {
+                yaw -= playerRotateSpeed;
+            }
+            else if (Input.GetKey("e"))
+            {
+                yaw += playerRotateSpeed;
+            }
+            else
+            {
+                yaw += horizontalSensitivity * Input.GetAxis("Mouse X");
+            }
+
+            pitch = Mathf.Clamp(pitch - (verticalSensitivity * Input.GetAxis("Mouse Y")), minAngle, maxAngle);
         }
-
-
-        pitch = Mathf.Clamp(pitch - (verticalSensitivity * Input.GetAxis("Mouse Y")), minAngle, maxAngle);
 
         transform.eulerAngles = new Vector3(0.0f, yaw, 0.0f);
         playerCam.transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
