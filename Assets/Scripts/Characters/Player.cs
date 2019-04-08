@@ -26,15 +26,13 @@ public class Player : Actor
 
     public int playerFloor = 1;
 
-    private Camera deathCam;
+    public GameObject deathMessage;
 
     private void Start()
     {
         hud = Instantiate(hudPrefab);
 
         positionDifference = new Vector3(0, 0, 0);
-
-        deathCam = GameObject.FindGameObjectWithTag("DeathCam").GetComponent<Camera>();
     }
 
     private void LateUpdate()
@@ -52,9 +50,7 @@ public class Player : Actor
         {
             transform.position = Vector3.zero;
 
-            StartCoroutine(_Revive);
-
-            Revive();
+            StartCoroutine(_Revive());
         }
     }
 
@@ -140,9 +136,11 @@ public class Player : Actor
 
     IEnumerator _Revive()
     {
-
+        deathMessage.SetActive(true);
 
         yield return new WaitForSeconds(3.0f);
+
+        deathMessage.SetActive(false);
 
         Revive();
     }

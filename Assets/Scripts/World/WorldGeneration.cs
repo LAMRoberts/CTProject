@@ -293,6 +293,8 @@ public class WorldGeneration : MonoBehaviour
             player.transform.position = new Vector3(startElevator.transform.position.x + pc.positionDifference.x, startElevator.transform.position.y + 2, startElevator.transform.position.z + pc.positionDifference.z);
 
             player.GetComponent<Player>().startPosition = player.transform.position;
+
+            player.GetComponent<Actor>().SetHealth(100.0f);
         }
     }
     

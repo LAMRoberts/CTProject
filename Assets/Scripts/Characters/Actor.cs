@@ -34,6 +34,11 @@ public class Actor : MonoBehaviour
 
     #endregion
 
+    public void SetHealth(float value)
+    {
+        health = value;
+    }
+
     public void TakeDamage(float damage)
     {
         float dmg = damage - (damage * damageResistance);
