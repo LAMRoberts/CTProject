@@ -415,6 +415,16 @@ Prefab:
       propertyPath: attackChargeRate
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 114986158477538760, guid: 046e6a748a019d2439c98d7db2b8939e,
+        type: 2}
+      propertyPath: usingController
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114986158477538760, guid: 046e6a748a019d2439c98d7db2b8939e,
+        type: 2}
+      propertyPath: usingMouse
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 046e6a748a019d2439c98d7db2b8939e, type: 2}
   m_IsPrefabAsset: 0
