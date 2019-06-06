@@ -51,6 +51,8 @@ public class Enemy : Actor
     public PhysicMaterial physicsMaterial;
     private bool droppedSword = false;
 
+    private bool playerInfront = false;
+
     private void Start()
     {
         // get player
@@ -86,13 +88,13 @@ public class Enemy : Actor
                 {
                     r.material.color = Color.green;
 
-                    TargetInRange();
+                    TargetInView();
 
                     break;
                 }
             case State.COMBAT:
                 {
-                    TargetInRange();
+                    TargetInView();
 
                     if (!committed)
                     {
@@ -143,7 +145,7 @@ public class Enemy : Actor
         }
     }
 
-    void TargetInRange()
+    void TargetInView()
     {
         RaycastHit hit;
 
@@ -155,15 +157,39 @@ public class Enemy : Actor
 
                 if (hit.distance < viewRange)
                 {
-                    //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
-                    r.material.color = Color.red;
+                    Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
 
-                    if (state != State.COMBAT)
+                    float dot = Vector3.Dot(dirToPlayer, transform.forward);
+
+                    Debug.Log(dot);
+
+                    if (dot > 0.5f)
                     {
-                        state = State.COMBAT;
+                        if (!playerInfront)
+                        {
+                            playerInfront = true;
+                        }
+                    }
+                    else
+                    {
+                        if(playerInfront)
+                        {
+                            playerInfront = false;
+                        }
                     }
 
-                    lastKnownPosition = player.transform.position;
+                    if (playerInfront || distanceToPlayer < personalSpace)
+                    {
+                        //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.green);
+                        r.material.color = Color.red;
+
+                        if (state != State.COMBAT)
+                        {
+                            state = State.COMBAT;
+                        }
+
+                        lastKnownPosition = player.transform.position;
+                    }
                 }
                 else
                 {

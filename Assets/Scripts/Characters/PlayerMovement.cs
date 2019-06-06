@@ -200,8 +200,6 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKey("w"))
             {
                 velocity += new Vector3(transform.forward.x * moveSpeed, 0, transform.forward.z * moveSpeed);
-
-                Debug.Log("w" + velocity);
             }
 
             // if moving backwards
