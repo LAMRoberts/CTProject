@@ -129,9 +129,15 @@ public class Profile : MonoBehaviour
         }
         else if (sideRoomCompleteProbability < 50.0f && sideRoomCompleteProbability > 25.0f)
         {
-            floorLength = floorLength * 1.1f;
+            if (floorLength > 6.0f)
+            {
+                floorLength = floorLength * 0.8f;
+            }
 
-            sideRoomCount = sideRoomCount * 1.1f;
+            if (sideRoomCount > 1.9f)
+            {
+                sideRoomCount = sideRoomCount * 0.8f;
+            }
         }
         else
         {
@@ -185,7 +191,7 @@ public class Profile : MonoBehaviour
 
     private void RecalculateEnemyKillProbability()
     {
-        sideRoomCompleteProbability = (sideRoomsComplete / totalSideRooms) * 100.0f;
+        enemyKillProbability = (enemiesKilled / totalEnemiesSpawned) * 100.0f;
     }
 
     public void SetKiller()
