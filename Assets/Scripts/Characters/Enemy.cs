@@ -30,6 +30,7 @@ public class Enemy : Actor
     public float personalSpace = 2.0f;
 
     public float speed = 10.0f;
+    public float rotationSpeed = 2.0f;
     public float walkingSpeed = 10.0f;
     public float runningSpeed = 20.0f;
 
@@ -106,7 +107,7 @@ public class Enemy : Actor
                         attackReady = true;
                     }
 
-                    if (attackReady)
+                    if (attackReady && playerInfront)
                     {
                         Attack();
                     }
@@ -208,29 +209,34 @@ public class Enemy : Actor
     {
         if (state == State.COMBAT)
         {
+            // rotate towards player
             if (!committed)
             {
-                Vector3 difference = targetPosition - transform.position;
-                float rotationY = Mathf.Atan2(difference.x, difference.z) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0.0f, rotationY, 0.0f);
-            }          
-
-            if (distanceToPlayer > combatRange)
-            {
-                speed = runningSpeed;
-
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+                Vector3 targetDir = player.transform.position - transform.position;
+                Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, rotationSpeed * Time.deltaTime, 0.0f);
+                transform.rotation = Quaternion.LookRotation(newDir);
             }
-            else if (distanceToPlayer < combatRange && distanceToPlayer > personalSpace)
+            
+            // move towards player
+            if (playerInfront)
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
-            }
-            else if (distanceToPlayer < personalSpace)
-            {
-                speed = walkingSpeed;
+                if (distanceToPlayer > combatRange)
+                {
+                    speed = runningSpeed;
 
-                // walk away from player
-                // transform.position = Vector3.MoveTowards(transform.position, transform.position - targetPosition, Time.deltaTime * speed);
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+                }
+                else if (distanceToPlayer < combatRange && distanceToPlayer > personalSpace)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+                }
+                else if (distanceToPlayer < personalSpace)
+                {
+                    speed = walkingSpeed;
+
+                    // walk away from player
+                    // transform.position = Vector3.MoveTowards(transform.position, transform.position - targetPosition, Time.deltaTime * speed);
+                }
             }
         }
     }
