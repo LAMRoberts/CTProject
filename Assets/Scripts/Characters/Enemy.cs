@@ -25,11 +25,12 @@ public class Enemy : Actor
 
     public Transform healthBarPoint;
     private int healthBarNumber;
-    public float viewRange = 10.0f;
+    public float viewRange = 3.0f;
     public float combatRange = 10.0f;
     public float personalSpace = 2.0f;
 
-    public float speed = 10.0f;
+    public float maxMovementSpeed = 10.0f;
+    public float currentMovementSpeed = 0.0f;
     public float rotationSpeed = 2.0f;
     public float walkingSpeed = 10.0f;
     public float runningSpeed = 20.0f;
@@ -53,6 +54,9 @@ public class Enemy : Actor
     private bool droppedSword = false;
 
     private bool playerInfront = false;
+    private bool playerInSight = false;
+
+    private float interestTimer = 0.0f;
 
     private void Start()
     {
@@ -157,11 +161,9 @@ public class Enemy : Actor
                 targetPosition = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
 
                 if (hit.distance < viewRange)
-                {
+                {                    
                     Vector3 dirToPlayer = (player.transform.position - transform.position).normalized;
-
                     float dot = Vector3.Dot(dirToPlayer, transform.forward);
-
                     Debug.Log(dot);
 
                     if (dot > 0.5f)
@@ -191,17 +193,46 @@ public class Enemy : Actor
 
                         lastKnownPosition = player.transform.position;
                     }
+
+                    playerInSight = true;
                 }
                 else
                 {
                     //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.yellow);
                     r.material.color = Color.yellow;
+
+                    if (playerInSight)
+                    {
+                        playerInSight = false;
+                    }
                 }
             }
             else
             {
+                if (playerInSight)
+                {
+                    playerInSight = false;
+                }
                 //Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.red);
             }
+        }
+    }
+
+    void LooseInterest()
+    {
+        if (state == State.COMBAT && distanceToPlayer > viewRange)
+        {
+            interestTimer += Time.deltaTime;
+            // countdown timer for interest
+        }
+        else
+        {
+            interestTimer = 0.0f;
+        }
+
+        if (interestTimer > 5.0f)
+        {
+            state = State.IDLE;
         }
     }
 
@@ -222,17 +253,17 @@ public class Enemy : Actor
             {
                 if (distanceToPlayer > combatRange)
                 {
-                    speed = runningSpeed;
+                    maxMovementSpeed = runningSpeed;
 
-                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * maxMovementSpeed);
                 }
                 else if (distanceToPlayer < combatRange && distanceToPlayer > personalSpace)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+                    transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * maxMovementSpeed);
                 }
                 else if (distanceToPlayer < personalSpace)
                 {
-                    speed = walkingSpeed;
+                    maxMovementSpeed = walkingSpeed;
 
                     // walk away from player
                     // transform.position = Vector3.MoveTowards(transform.position, transform.position - targetPosition, Time.deltaTime * speed);

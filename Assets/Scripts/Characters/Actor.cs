@@ -7,7 +7,7 @@ public class Actor : MonoBehaviour
     [SerializeField]
     private float health = 100.0f;
     [SerializeField]
-    private float damageResistance = 0.0f; // 0.0 to 1.0
+    public float damageResistance = 0.0f; // 0.0 to 1.0
     [SerializeField]
     private float stamina;
     [SerializeField]

@@ -33,6 +33,8 @@ public class Player : Actor
         hud = Instantiate(hudPrefab);
 
         positionDifference = new Vector3(0, 0, 0);
+
+        damageResistance = 0.1f;
     }
 
     private void LateUpdate()
@@ -119,7 +121,7 @@ public class Player : Actor
 
         sc.UpdateColour(attackPower / 100);
 
-        sc.gameObject.GetComponentInChildren<Sword>().UpdateDamage(attackPower);
+        sc.gameObject.GetComponentInChildren<Sword>().UpdateDamage(attackPower * 10.0f);
 
         attacking = sc.UpdateSword(attacking, charging);
     }

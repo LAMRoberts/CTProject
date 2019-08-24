@@ -8,7 +8,7 @@ public class Sword : MonoBehaviour
 
     public bool ready = false;
 
-    public const float damage = 10.0f;
+    public const float damage = 5.0f;
 
     private float currentDamage;
 
